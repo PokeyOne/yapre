@@ -28,6 +28,19 @@ fn test_point_add() {
 }
 
 #[test]
+fn test_point_sub() {
+    let a = Point::new(1.0, 2.0, 3.0);
+    let b = Point::new(2.0, 1.0, 0.0);
+    let a_b_expected = Point::new(-1.0, 1.0, 3.0);
+    let b_a_expected = Point::new(1.0, -1.0, -3.0);
+
+    assert_eq!(a, a.clone() - ORIGIN);
+    assert_eq!(a, a - ORIGIN);
+    assert_eq!(a_b_expected, a - b);
+    assert_eq!(b_a_expected, b - a);
+}
+
+#[test]
 fn test_point_equality() {
     let a = ORIGIN;
     let b = ORIGIN;

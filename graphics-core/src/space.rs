@@ -5,7 +5,7 @@
 
 mod tests;
 
-use std::ops::Add;
+use std::ops::{Add, Sub};
 
 const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
 
@@ -46,6 +46,18 @@ impl Add for Point {
             self.x + other.x,
             self.y + other.y,
             self.z + other.z
+        )
+    }
+}
+
+impl Sub for Point {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self {
+        Point::new(
+            self.x - other.x,
+            self.y - other.y,
+            self.z - other.z
         )
     }
 }
