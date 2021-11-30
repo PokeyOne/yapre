@@ -1,5 +1,6 @@
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
+use sdl2::mouse::MouseButton;
 use sdl2::pixels::Color;
 use sdl2::rect::{Point, Rect};
 use std::time::Duration;
@@ -64,7 +65,21 @@ fn main() -> Result<(), String> {
                     ..
                 } => {
                     mouse_x = x;
-                    mouse_y = y
+                    mouse_y = y;
+                },
+                Event::MouseButtonDown {
+                    x,
+                    y,
+                    mouse_btn: MouseButton::Left,
+                    ..
+                } => {
+                    println!("Click at ({}, {}) with the left button", x, y);
+
+                    for button in &buttons {
+                        if button.rect.contains_point(Point::new(x, y)) {
+                            println!("Button {} was clicked", &button.name);
+                        }
+                    }
                 },
                 _ => {}
             }
