@@ -131,4 +131,8 @@ impl<'a> RefTriangle<'a> {
             self.points[2].clone()
         ])
     }
+
+    pub fn as_triangle(&self) -> Triangle {
+        self.clone().into_triangle()
+    }
 }
