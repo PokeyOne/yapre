@@ -11,14 +11,14 @@ use std::ops::{Add, Sub, Mul};
 const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-struct Point {
+pub struct Point {
     pub x: f64,
     pub y: f64,
     pub z: f64
 }
 
 #[derive(Debug, Clone)]
-struct Triangle {
+pub struct Triangle {
     pub points: [Point; 3]
 }
 
@@ -33,6 +33,19 @@ impl Point {
             y: self.y * scale,
             z: self.z * scale
         }
+    }
+
+    pub fn dot(&self, other: &Point) -> f64 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+
+    pub fn length(&self) -> f64 {
+        self.dot(&self).sqrt()
+    }
+
+    pub fn normalized(&self) -> Self {
+        let l = self.length();
+        Point::new(self.x / l, self.y / l, self.z / l)
     }
 }
 
@@ -107,4 +120,26 @@ impl PartialEq for Triangle {
 
         return true;
     }
+}
+
+pub struct Line {
+    location: Point,
+    direction: Point
+}
+
+impl Line {
+    pub fn new(location: Point, direction: Point) -> Self {
+        Line { location, direction: direction.normalized() }
+    }
+
+    pub fn from_points(a: Point, b: Point) -> Self {
+        Line {
+            location: a,
+            direction: (b - a).normalized()
+        }
+    }
+}
+
+pub struct Mesh {
+    tris: Vec<Triangle>
 }

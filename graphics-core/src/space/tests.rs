@@ -61,6 +61,14 @@ fn test_point_scaling_op() {
 }
 
 #[test]
+fn point_magnitude() {
+    let a = Point::new(0.0, 3.0, 4.0);
+
+    assert_eq!(ORIGIN.length(), 0.0);
+    assert_eq!(a.length(), 5.0);
+}
+
+#[test]
 fn test_point_equality() {
     let a = ORIGIN;
     let b = ORIGIN;
