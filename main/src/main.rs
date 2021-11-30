@@ -1,3 +1,5 @@
+mod licensing;
+
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseButton;
@@ -21,6 +23,8 @@ impl Button {
 }
 
 fn main() -> Result<(), String> {
+    licensing::print_license();
+
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
 
