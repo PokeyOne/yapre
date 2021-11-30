@@ -5,6 +5,9 @@ use sdl2::pixels::Color;
 use sdl2::rect::{Point, Rect};
 use std::time::Duration;
 
+// TODO: it would be nice to seperate out a bunch of UI type stuff to build
+// quick and simple UI components.
+
 struct Button {
     name: String,
     rect: Rect,
