@@ -1,3 +1,8 @@
+// Yet Another Pokey Render Engine (in Rust This Time)
+// Copyright (C) 2021 Mateo Carreras
+//
+// file created: 2021-11-30
+
 mod licensing;
 
 use sdl2::event::Event;
