@@ -3,6 +3,7 @@
 //
 // file created: 2021-11-30
 
+#[cfg(test)]
 mod tests;
 
 use std::ops::{Add, Sub, Mul};

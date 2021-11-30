@@ -1,5 +1,3 @@
-use super::*;
-
 #[test]
 fn test_point_construction() {
     let p = Point::new(1.0, 2.0, 3.0);
