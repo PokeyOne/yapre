@@ -1,3 +1,5 @@
+use super::*;
+
 #[test]
 fn test_point_construction() {
     let p = Point::new(1.0, 2.0, 3.0);
@@ -124,20 +126,4 @@ fn triangle_with_duplicate_points_should_panic() {
         ORIGIN,
         Point::new(1.0, 0.0, 0.0)
     ]);
-}
-
-#[test]
-fn test_ref_triangle_into_triangle() {
-    let expected_triangle = Triangle::new([
-        ORIGIN,
-        Point::new(1.0, 1.0, 1.0),
-        Point::new(-1.0, 1.0, 1.0)
-    ]);
-    let tref = RefTriangle::new([
-        &expected_triangle.points[0],
-        &expected_triangle.points[1],
-        &expected_triangle.points[2]
-    ]);
-
-    assert_eq!(expected_triangle.points, tref.into_triangle().points);
 }
