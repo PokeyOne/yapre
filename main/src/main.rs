@@ -1,8 +1,20 @@
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
-use sdl2::rect::Point;
+use sdl2::rect::{Point, Rect};
 use std::time::Duration;
+
+struct Button {
+    name: String,
+    rect: Rect,
+    color: Color
+}
+
+impl Button {
+    fn new(name: String, rect: Rect, color: Color) -> Button {
+        Button { name, rect, color }
+    }
+}
 
 fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
@@ -25,6 +37,18 @@ fn main() -> Result<(), String> {
     // The x and y position in pixels from the top-left corner
     let mut mouse_x = 0;
     let mut mouse_y = 0;
+
+    let mut buttons: Vec<Button> = Vec::new();
+    buttons.push(Button::new(
+        "alpha".to_string(),
+        Rect::new(20, 20, 200, 40),
+        Color::RGB(255, 255, 255)
+    ));
+    buttons.push(Button::new(
+        "beta".to_string(),
+        Rect::new(20, 80, 200, 40),
+        Color::RGB(255, 255, 255)
+    ));
 
     'main_loop: loop {
         for event in event_pump.poll_iter() {
@@ -54,6 +78,11 @@ fn main() -> Result<(), String> {
         canvas.draw_line(Point::new(800, 0), Point::new(mouse_x, mouse_y));
         canvas.draw_line(Point::new(0, 600), Point::new(mouse_x, mouse_y));
         canvas.draw_line(Point::new(800, 600), Point::new(mouse_x, mouse_y));
+
+        for button in &buttons {
+            canvas.set_draw_color(button.color.clone());
+            canvas.fill_rect(button.rect.clone());
+        }
 
         canvas.present();
 
