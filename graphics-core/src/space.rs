@@ -5,9 +5,11 @@
 
 mod tests;
 
+use std::ops::Add;
+
 const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 struct Point {
     pub x: f64,
     pub y: f64,
@@ -36,11 +38,15 @@ impl Point {
     }
 }
 
-impl PartialEq for Point {
-    fn eq(&self, other: &Point) -> bool {
-        self.x == other.x
-            && self.y == other.y
-            && self.z == other.z
+impl Add for Point {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Point::new(
+            self.x + other.x,
+            self.y + other.y,
+            self.z + other.z
+        )
     }
 }
 
