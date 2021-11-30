@@ -5,7 +5,7 @@
 
 mod tests;
 
-use std::ops::{Add, Sub};
+use std::ops::{Add, Sub, Mul};
 
 const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
 
@@ -36,6 +36,14 @@ impl Point {
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         Point { x, y, z }
     }
+
+    pub fn scale(&self, scale: f64) -> Self {
+        Point {
+            x: self.x * scale,
+            y: self.y * scale,
+            z: self.z * scale
+        }
+    }
 }
 
 impl Add for Point {
@@ -59,6 +67,14 @@ impl Sub for Point {
             self.y - other.y,
             self.z - other.z
         )
+    }
+}
+
+impl Mul<f64> for Point {
+    type Output = Self;
+
+    fn mul(self, other: f64) -> Self {
+        self.scale(other)
     }
 }
 

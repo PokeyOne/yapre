@@ -41,6 +41,26 @@ fn test_point_sub() {
 }
 
 #[test]
+fn test_point_scaling_function() {
+    let a = Point::new(1.0, 2.0, 3.0);
+
+    assert_eq!(a, a.scale(1.0));
+    assert_eq!(ORIGIN, a.scale(0.0));
+    assert_eq!(ORIGIN, ORIGIN.scale(1000.0));
+    assert_eq!(Point { x: 3.0, y: 6.0, z: 9.0 }, a.scale(3.0));
+}
+
+#[test]
+fn test_point_scaling_op() {
+    let a = Point::new(1.0, 2.0, 3.0);
+
+    assert_eq!(a, a * 1.0);
+    assert_eq!(ORIGIN, a * 0.0);
+    assert_eq!(ORIGIN, ORIGIN * 1000.0);
+    assert_eq!(Point { x: 3.0, y: 6.0, z: 9.0 }, a * 3.0);
+}
+
+#[test]
 fn test_point_equality() {
     let a = ORIGIN;
     let b = ORIGIN;
