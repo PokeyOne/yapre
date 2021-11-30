@@ -3,21 +3,25 @@
 //
 // file created: 2021-11-30
 
+mod tests;
+
+const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
+
 #[derive(Debug, Clone)]
 struct Point {
-    x: f64,
-    y: f64,
-    z: f64
+    pub x: f64,
+    pub y: f64,
+    pub z: f64
 }
 
 #[derive(Debug, Clone)]
 struct Triangle {
-    points: [Point; 3]
+    pub points: [Point; 3]
 }
 
 #[derive(Debug, Clone)]
 struct RefTriangle<'a> {
-    points: [&'a Point; 3]
+    pub points: [&'a Point; 3]
 }
 
 #[derive(Debug, Clone)]
@@ -32,9 +36,52 @@ impl Point {
     }
 }
 
+impl PartialEq for Point {
+    fn eq(&self, other: &Point) -> bool {
+        self.x == other.x
+            && self.y == other.y
+            && self.z == other.z
+    }
+}
+
 impl Triangle {
     pub fn new(points: [Point; 3]) -> Self {
         Triangle { points }
+    }
+}
+
+impl PartialEq for Triangle {
+    fn eq(&self, other: &Triangle) -> bool {
+        // These are the indexes of each point of this triangle in the other
+        // triangle
+        let mut indexes_in_other: [i8; 3] = [-1, -1, -1];
+
+        for i in 0..3 {
+            'j_loop: for j in 0..3 {
+                // If we have already matched this index with another ith triangle
+                // on self, then we can't match it again.
+                for iio in indexes_in_other {
+                    if iio == j {
+                        continue 'j_loop;
+                    }
+                }
+
+                if self.points[i as usize] == other.points[j as usize] {
+                    indexes_in_other[i] = j;
+                    break 'j_loop;
+                }
+            }
+        }
+
+        // Now if all the numbers in "indexes_in_other" are non-negative, then
+        // we have equality.
+        for iio in indexes_in_other {
+            if iio < 0 {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
