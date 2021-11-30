@@ -118,7 +118,15 @@ fn test_triangle_equality_not_equal() {
     assert_ne!(a, b);
 }
 
-// TODO: test triangle equality with duplicate points
+#[test]
+#[should_panic]
+fn triangle_with_duplicate_points_should_panic() {
+    let a = Triangle::new([
+        ORIGIN,
+        ORIGIN,
+        Point::new(1.0, 0.0, 0.0)
+    ]);
+}
 
 #[test]
 fn test_ref_triangle_into_triangle() {

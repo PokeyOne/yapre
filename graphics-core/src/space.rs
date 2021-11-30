@@ -80,6 +80,10 @@ impl Mul<f64> for Point {
 
 impl Triangle {
     pub fn new(points: [Point; 3]) -> Self {
+        assert_ne!(points[0], points[1]);
+        assert_ne!(points[0], points[2]);
+        assert_ne!(points[1], points[2]);
+
         Triangle { points }
     }
 }
@@ -92,13 +96,9 @@ impl PartialEq for Triangle {
 
         for i in 0..3 {
             'j_loop: for j in 0..3 {
-                // If we have already matched this index with another ith triangle
-                // on self, then we can't match it again.
-                for iio in indexes_in_other {
-                    if iio == j {
-                        continue 'j_loop;
-                    }
-                }
+                // note we don't have to test if we have already matched this
+                // jth point before because a Triangle with duplicate points
+                // is undefined behaviour and panics in the "new" function.
 
                 if self.points[i as usize] == other.points[j as usize] {
                     indexes_in_other[i] = j;
