@@ -3,5 +3,9 @@
 version = 3
 
 [[package]]
+name = "yapre-graphics-core"
+version = "0.1.0"
+
+[[package]]
 name = "yapre-main"
 version = "0.1.0"
