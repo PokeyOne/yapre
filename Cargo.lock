@@ -65,3 +65,6 @@ dependencies = [
 [[package]]
 name = "yapre-main"
 version = "0.1.0"
+dependencies = [
+ "sdl2",
+]
