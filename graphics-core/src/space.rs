@@ -44,6 +44,10 @@ impl Point {
     }
 
     pub fn normalized(&self) -> Self {
+        if *self == ORIGIN {
+            return self.clone();
+        }
+
         let l = self.length();
         Point::new(self.x / l, self.y / l, self.z / l)
     }

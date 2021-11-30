@@ -69,6 +69,22 @@ fn point_magnitude() {
 }
 
 #[test]
+fn point_dot_product() {
+    let a = Point::new(1.0, 2.0, 3.0);
+    let b = Point::new(3.0, 2.0, 1.0);
+
+    assert_eq!(10.0, a.dot(&b));
+    assert_eq!(10.0, b.dot(&a));
+    assert_eq!(0.0, ORIGIN.dot(&a));
+}
+
+#[test]
+fn point_normalization() {
+    assert_eq!(ORIGIN, ORIGIN.normalized());
+    assert_eq!(Point::new(0.0, 0.6, 0.8), Point::new(0.0, 3.0, 4.0).normalized());
+}
+
+#[test]
 fn test_point_equality() {
     let a = ORIGIN;
     let b = ORIGIN;
