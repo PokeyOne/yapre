@@ -8,5 +8,8 @@ rendering engine. Hopefully this time with more follow through as Rust makes
 things easier to get setup and running with fewer errors along the way.
 
 The project is in the very early stages right now and there really isn't much
-here other than me playing around with using SDL2 in Rust to create a window
-and such.
+of anything substantial. The biggest milestone hit so far has been being able
+to render a triangle in '#' characters by calculating collisions between rays
+and a triangle. Here is that image:
+![first triangle](readme_resources/first_triangle.png)
+
