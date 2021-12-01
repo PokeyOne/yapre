@@ -8,7 +8,8 @@ pub enum Camera {
 
 pub trait Renderer {
     // TODO: In the future this should be a Scene that has Mesh objects
-    fn render(&self, tri: Triangle, image_size: (usize, usize)) -> RawImage;
+    // TODO: Change to triangle pointer
+    fn render(&self, tri: &Triangle, image_size: (usize, usize)) -> RawImage;
 }
 
 pub struct OrthographicCamera {
@@ -17,8 +18,14 @@ pub struct OrthographicCamera {
     height: f64
 }
 
+impl OrthographicCamera {
+    pub fn new(location: Point, width: f64, height: f64) -> Self {
+        OrthographicCamera { location, width, height }
+    }
+}
+
 impl Renderer for OrthographicCamera {
-    fn render(&self, tri: Triangle, image_size: (usize, usize)) -> RawImage {
+    fn render(&self, tri: &Triangle, image_size: (usize, usize)) -> RawImage {
         let mut output_image = RawImage::new(image_size.0, image_size.1);
 
         for j in 0..(image_size.1) {

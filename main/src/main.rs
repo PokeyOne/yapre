@@ -12,7 +12,11 @@ use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::rect::{Point, Rect};
 use std::time::Duration;
 
-use yapre_graphics_core::images::RawImage;
+use yapre_graphics_core::{
+    images::{RawImage, Color as YapreColor},
+    camera::{Renderer, OrthographicCamera},
+    space::{Triangle, Point as YaprePoint, ORIGIN}
+};
 
 // TODO: it would be nice to seperate out a bunch of UI type stuff to build
 // quick and simple UI components.
@@ -65,8 +69,13 @@ fn main() -> Result<(), String> {
         Color::RGB(255, 255, 255)
     ));
 
-    //let mut some_image: RawImage = RawImage::new(128, 128, PixelFormatEnum::RGB24)?;
-    //println!("{:?}", some_image.save_to_temp_path());
+    let triangle = Triangle::new([
+        YaprePoint::new(0.0, 1.0, 1.0),
+        YaprePoint::new(1.0, -1.0, 1.0),
+        YaprePoint::new(-1.0, -1.0, 1.0)
+    ]);
+    let cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
+    let img = cam.render(&triangle, (100, 100));
 
     'main_loop: loop {
         for event in event_pump.poll_iter() {
@@ -110,6 +119,15 @@ fn main() -> Result<(), String> {
         for button in &buttons {
             canvas.set_draw_color(button.color.clone());
             canvas.fill_rect(button.rect.clone());
+        }
+
+        for x in 0..100 {
+            for y in 0..100 {
+                let pix = img.get_pixel(y, x).color.clone();
+                // TODO: try rgba
+                canvas.set_draw_color(Color::RGB(pix.r, pix.g, pix.b));
+                canvas.draw_point(Point::new((x + 200) as i32, (y + 200) as i32));
+            }
         }
 
         canvas.present();
