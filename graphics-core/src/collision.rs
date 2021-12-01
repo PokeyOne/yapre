@@ -10,12 +10,30 @@ use crate::space::{Line, Mesh, Point, Triangle};
 
 type Ray = Line;
 
+pub struct Collision {
+    pub point: Point,
+    pub distance: f64
+}
+
+impl Collision {
+    pub fn new(point: Point, distance: f64) -> Self {
+        Self {
+            point,
+            distance
+        }
+    }
+}
+
 pub trait Collidable {
-    fn intersection_point(&self, ray: &Ray) -> Option<Point>;
+    fn intersection_point(&self, ray: &Ray) -> Option<Collision>;
 }
 
 impl Collidable for Triangle {
-    fn intersection_point(&self, ray: &Ray) -> Option<Point> {
+    // TODO: This code was written by an AI, so literally no one knows
+    //       fully what it does. Should probably go through and rename variables
+    //       and comment what things do.
+    /// Returns the intersection point of a ray with a triangle.
+    fn intersection_point(&self, ray: &Ray) -> Option<Collision> {
         let e1 = self.points[1] - self.points[0];
         let e2 = self.points[2] - self.points[0];
         let p = ray.direction().cross(&e2);
@@ -35,10 +53,10 @@ impl Collidable for Triangle {
             return None;
         }
         let t = e2.dot(&q) * inv_det;
-        if t > 1e-6 {
-            Some(ray.location() + ray.direction() * t)
-        } else {
-            None
-        }
+        let location_of_collision = ray.location() + ray.direction() * t;
+
+        // Because the ray direction is normalized, the distance between the
+        // ray's location and the collision point is the same as t.
+        Some(Collision::new(location_of_collision, t))
     }
 }

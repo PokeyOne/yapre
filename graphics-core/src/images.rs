@@ -101,8 +101,12 @@ impl RawImage {
         RawImage { pixels }
     }
 
-    pub fn set_pixel(&mut self, c: Color, x: usize, y: usize) {
-        // TODO
+    pub fn get_pixel(&self, row: usize, col: usize) -> &Pixel {
+        &self.pixels[row][col]
+    }
+
+    pub fn set_pixel(&mut self, c: Color, row: usize, col: usize) {
+        self.pixels[row][col].color = c;
     }
 
     /// Output the image to a file in a temporary directory then return the
@@ -111,7 +115,7 @@ impl RawImage {
     /// with an error method.
     pub fn save_to_temp_path(&self) -> Result<String, String> {
         let path_string = generate_random_temp_path();
-        let path = Path::new(&path_string);
+        let _path = Path::new(&path_string);
         println!("Path would be {:?}", path_string);
 
         Err(String::from("Not implemented"))
