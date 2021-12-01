@@ -210,6 +210,12 @@ impl Triangle {
 
         Triangle { points }
     }
+
+    pub fn shift(&mut self, by: Point) {
+        for i in 0..3 {
+            self.points[i] = self.points[i] + by;
+        }
+    }
 }
 
 impl PartialEq for Triangle {
