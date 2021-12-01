@@ -37,3 +37,21 @@ fn ray_backwards_into_triangle() {
         }
     };
 }
+
+#[test]
+fn test_ray_collision_on_an_angle() {
+    let triangle = create_test_triangle();
+    let ray = Ray::new(
+        Point::new(1.0, 1.0, 0.0),
+        Point::new(-1.0, -1.0, 1.0)
+    );
+
+    match triangle.intersection_point(&ray) {
+        None => panic!("Ray should intersect"),
+        Some(Collision { point, distance }) => {
+            assert_eq!(Point::new(0.0, 0.0, 1.0), point);
+            println!("{}", distance);
+            assert!((distance - 3.0f64.sqrt()).abs() < 0.00001);
+        }
+    };
+}
