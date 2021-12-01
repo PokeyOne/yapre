@@ -69,13 +69,16 @@ fn main() -> Result<(), String> {
         Color::RGB(255, 255, 255)
     ));
 
-    let triangle = Triangle::new([
+    let mut triangle = Triangle::new([
         YaprePoint::new(0.0, 1.0, 1.0),
         YaprePoint::new(1.0, -1.0, 1.0),
         YaprePoint::new(-1.0, -1.0, 1.0)
     ]);
-    let cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
-    let img = cam.render(&triangle, (100, 100));
+    let mut cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
+    let mut animation_frame: i32 = 0;
+    let animation_frame_max: i32 = 25;
+    let animation_frame_min: i32 = -25;
+    let mut animation_direction: i32 = 1;
 
     'main_loop: loop {
         for event in event_pump.poll_iter() {
@@ -110,6 +113,7 @@ fn main() -> Result<(), String> {
         canvas.set_draw_color(Color::RGB(128, 128, 128));
         canvas.clear();
 
+        /*
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.draw_line(Point::new(0, 0), Point::new(mouse_x, mouse_y));
         canvas.draw_line(Point::new(800, 0), Point::new(mouse_x, mouse_y));
@@ -119,8 +123,17 @@ fn main() -> Result<(), String> {
         for button in &buttons {
             canvas.set_draw_color(button.color.clone());
             canvas.fill_rect(button.rect.clone());
+        }*/
+
+        triangle.shift(YaprePoint::new(0.06 * (animation_direction as f64), 0.0, 0.0));
+        animation_frame += animation_direction;
+        if animation_frame >= animation_frame_max && animation_direction > 0 {
+            animation_direction = -animation_direction;
+        } else if animation_frame <= animation_frame_min && animation_direction < 0 {
+            animation_direction = -animation_direction;
         }
 
+        let img = cam.render(&triangle, (100, 100));
         for x in 0..100 {
             for y in 0..100 {
                 let pix = img.get_pixel(y, x).color.clone();

@@ -13,3 +13,6 @@ to render a triangle in '#' characters by calculating collisions between rays
 and a triangle. Here is that image:
 ![first triangle](readme_resources/first_triangle.png)
 
+And now it can render animations:
+![first animation](readme_resources/first_animation.mov)
+
