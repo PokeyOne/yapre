@@ -16,7 +16,7 @@ pub const ORIGIN: Point = Point {
 
 /// The most basic unit of free space, respresenting a single location using
 /// the x, y, and z axes.
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone)]
 pub struct Point {
     /// x coordinate
     pub x: f64,
@@ -24,6 +24,14 @@ pub struct Point {
     pub y: f64,
     /// z coordinate
     pub z: f64
+}
+
+impl PartialEq for Point {
+    fn eq(&self, other: &Self) -> bool {
+        (self.x - other.x).abs() < 0.00001
+        && (self.y - other.y).abs() < 0.00001
+        && (self.z - other.z).abs() < 0.00001
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -111,6 +119,39 @@ impl Point {
 
         let l = self.length();
         Point::new(self.x / l, self.y / l, self.z / l)
+    }
+
+    /// Rotates the point around the given point by the given angle.
+    ///
+    /// # Example
+    /// ```
+    /// # use yapre_graphics_core::space::Point;
+    /// let point = Point::new(1.0, 0.0, 0.0);
+    /// let rotated = point.rotated([0.0, std::f64::consts::PI, 0.0], &Point::new(0.0, 0.0, 0.0));
+    /// assert_eq!(Point::new(-1.0, 0.0, 0.0), rotated);
+    /// ```
+    pub fn rotated(&self, angle: [f64; 3], origin: &Point) -> Self {
+        let x = self.x - origin.x;
+        let y = self.y - origin.y;
+        let z = self.z - origin.z;
+
+        let x_rot = x * angle[0].cos() - y * angle[0].sin();
+        let y_rot = x * angle[0].sin() + y * angle[0].cos();
+        let z_rot = z;
+
+        let x_rot = x_rot * angle[1].cos() - z_rot * angle[1].sin();
+        let z_rot = x_rot * angle[1].sin() + z_rot * angle[1].cos();
+        let y_rot = y_rot;
+
+        let x_rot = x_rot * angle[2].cos() - y_rot * angle[2].sin();
+        let y_rot = x_rot * angle[2].sin() + y_rot * angle[2].cos();
+        let z_rot = z_rot;
+
+        let x_rot = x_rot + origin.x;
+        let y_rot = y_rot + origin.y;
+        let z_rot = z_rot + origin.z;
+
+        Point::new(x_rot, y_rot, z_rot)
     }
 }
 
