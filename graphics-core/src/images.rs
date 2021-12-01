@@ -2,26 +2,87 @@
 mod tests;
 
 use std::path::Path;
-
-use sdl2::pixels::{Color, PixelFormatEnum};
-use sdl2::render::Canvas;
-use sdl2::surface::Surface;
-use sdl2::rect::Point as SdlPoint;
-
+use std::fmt::{Formatter, Error as FormatterError};
 use uuid::Uuid;
 
-pub struct RawImage<'a> {
-    canvas: Canvas<Surface<'a>>
+pub const WHITE: Color = Color {
+    r: 255,
+    g: 255,
+    b: 255,
+    a: 255
+};
+pub const BLACK: Color = Color {
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 255
+};
+pub const RED: Color = Color {
+    r: 255,
+    g: 0,
+    b: 0,
+    a: 255
+};
+pub const GREEN: Color = Color {
+    r: 0,
+    g: 255,
+    b: 0,
+    a: 255
+};
+pub const BLUE: Color = Color {
+    r: 0,
+    g: 0,
+    b: 255,
+    a: 255
+};
+
+pub struct Color {
+    r: u8,
+    g: u8,
+    b: u8,
+    a: u8
 }
 
-// TODO: I think the easiest way to do this for now may be to just stay out of sdl
-//       until passing it to the program using this API.
-impl RawImage<'_> {
-    pub fn new(width: u32, height: u32, pixel_format: PixelFormatEnum) -> Result<Self, String> {
-        let surface = Surface::new(width, height, pixel_format)?;
-        let canvas = surface.into_canvas()?;
+impl Color {
+    pub fn new(r: u8, g: u8, b: u8, a: u8) -> Color {
+        Color {
+            r: r,
+            g: g,
+            b: b,
+            a: a
+        }
+    }
 
-        Ok(RawImage { canvas })
+    pub fn rgba(&self) -> u32 {
+        (self.r as u32) << 24 | (self.g as u32) << 16 | (self.b as u32) << 8 | (self.a as u32)
+    }
+}
+
+impl Debug for Color {
+    fn fmt(&self, f: &mut Formatter) -> Result<(), FormatterError> {
+        write!(f, "Color {{ {:#X} }}", self.rgba());
+    }
+}
+
+pub struct Pixel {
+    color: Color
+}
+
+impl Pixel {
+    pub fn new(color: Color) -> Pixel {
+        Pixel {
+            color: color
+        }
+    }
+}
+
+pub struct RawImage {
+    pixels: Vec<Vec<Pixel>>
+}
+
+impl RawImage<'_> {
+    pub fn new(width: u32, height: u32) -> Self {
+
     }
 
     pub fn set_pixel(&mut self, c: Color, x: i32, y: i32) -> Result<(), String> {
