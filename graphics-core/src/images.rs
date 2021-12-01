@@ -2,7 +2,7 @@
 mod tests;
 
 use std::path::Path;
-use std::fmt::{Formatter, Error as FormatterError};
+use std::fmt::{Formatter, Error as FormatterError, Debug};
 use uuid::Uuid;
 
 pub const WHITE: Color = Color {
@@ -35,7 +35,14 @@ pub const BLUE: Color = Color {
     b: 255,
     a: 255
 };
+pub const CLEAR: Color = Color {
+    r: 255,
+    g: 255,
+    b: 255,
+    a: 0,
+};
 
+#[derive(Clone)]
 pub struct Color {
     r: u8,
     g: u8,
@@ -60,10 +67,11 @@ impl Color {
 
 impl Debug for Color {
     fn fmt(&self, f: &mut Formatter) -> Result<(), FormatterError> {
-        write!(f, "Color {{ {:#X} }}", self.rgba());
+        write!(f, "Color {{ {:#X} }}", self.rgba())
     }
 }
 
+#[derive(Clone, Debug)]
 pub struct Pixel {
     color: Color
 }
@@ -80,16 +88,21 @@ pub struct RawImage {
     pixels: Vec<Vec<Pixel>>
 }
 
-impl RawImage<'_> {
-    pub fn new(width: u32, height: u32) -> Self {
+impl RawImage {
+    pub fn new(width: usize, height: usize) -> Self {
+        let mut pixels: Vec<Vec<Pixel>> = Vec::new();
+        pixels.reserve(width);
 
+        for _ in 0..width {
+            let column: Vec<Pixel> = vec![Pixel::new(CLEAR); height];
+            pixels.push(column);
+        }
+
+        RawImage { pixels }
     }
 
-    pub fn set_pixel(&mut self, c: Color, x: i32, y: i32) -> Result<(), String> {
-        self.canvas.set_draw_color(c);
-        self.canvas.draw_point(SdlPoint::new(x, y))?;
-
-        Ok(())
+    pub fn set_pixel(&mut self, c: Color, x: usize, y: usize) {
+        // TODO
     }
 
     /// Output the image to a file in a temporary directory then return the
