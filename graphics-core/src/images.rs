@@ -14,6 +14,8 @@ pub struct RawImage<'a> {
     canvas: Canvas<Surface<'a>>
 }
 
+// TODO: I think the easiest way to do this for now may be to just stay out of sdl
+//       until passing it to the program using this API.
 impl RawImage<'_> {
     pub fn new(width: u32, height: u32, pixel_format: PixelFormatEnum) -> Result<Self, String> {
         let surface = Surface::new(width, height, pixel_format)?;
