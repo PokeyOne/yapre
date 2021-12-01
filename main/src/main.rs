@@ -79,6 +79,8 @@ fn main() -> Result<(), String> {
     let animation_frame_max: i32 = 25;
     let animation_frame_min: i32 = -25;
     let mut animation_direction: i32 = 1;
+    let mut animation_rotation: f64 = 0.0;
+    let animation_rotation_max: f64 = std::f64::consts::PI * 2.0;
 
     'main_loop: loop {
         for event in event_pump.poll_iter() {
@@ -137,8 +139,13 @@ fn main() -> Result<(), String> {
             animation_direction = -animation_direction;
         }
 
+        animation_rotation += 0.1;
+        if animation_rotation > animation_rotation_max {
+            animation_rotation = 0.0;
+        }
+
         let rend_size = 300;
-        let img = cam.render(&triangle, (rend_size, rend_size));
+        let img = cam.render(&triangle.rotated([0.0, animation_rotation, 0.0], &triangle.geometric_center()), (rend_size, rend_size));
         for x in 0..rend_size {
             for y in 0..rend_size {
                 let pix = img.get_pixel(y, x).color.clone();

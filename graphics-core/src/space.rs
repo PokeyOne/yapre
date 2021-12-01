@@ -257,6 +257,30 @@ impl Triangle {
             self.points[i] = self.points[i] + by;
         }
     }
+
+    /// Rotates the triangle around the given point by the given angle.
+    pub fn rotated(&self, angle: [f64; 3], origin: &Point) -> Self {
+        let mut points = [Point::new(0.0, 0.0, 0.0); 3];
+        for i in 0..3 {
+            points[i] = self.points[i].rotated(angle, origin);
+        }
+
+        Triangle::new(points)
+    }
+
+    pub fn geometric_center(&self) -> Point {
+        let mut x = 0.0;
+        let mut y = 0.0;
+        let mut z = 0.0;
+
+        for i in 0..3 {
+            x += self.points[i].x;
+            y += self.points[i].y;
+            z += self.points[i].z;
+        }
+
+        Point::new(x / 3.0, y / 3.0, z / 3.0)
+    }
 }
 
 impl PartialEq for Triangle {
