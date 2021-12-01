@@ -79,12 +79,6 @@ fn point_dot_product() {
 }
 
 #[test]
-fn point_normalization() {
-    assert_eq!(ORIGIN, ORIGIN.normalized());
-    assert_eq!(Point::new(0.0, 0.6, 0.8), Point::new(0.0, 3.0, 4.0).normalized());
-}
-
-#[test]
 fn test_point_equality() {
     let a = ORIGIN;
     let b = ORIGIN;

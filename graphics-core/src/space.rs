@@ -6,14 +6,19 @@
 #[cfg(test)]
 mod tests;
 
-use std::ops::{Add, Sub, Mul};
+use std::ops::{Add, Sub, Mul, Div};
 
-const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
+pub const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
 
+/// The most basic unit of free space, respresenting a single location using
+/// the x, y, and z axes.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Point {
+    /// x coordinate
     pub x: f64,
+    /// y coordinate
     pub y: f64,
+    /// z coordinate
     pub z: f64
 }
 
@@ -27,11 +32,36 @@ impl Point {
         Point { x, y, z }
     }
 
+    /// Computes the result of scalar multiplication of this Point.
+    ///
+    /// # Example
+    /// ```
+    /// # use yapre_graphics_core::space::Point;
+    /// let scaled = Point::new(5.0, 4.0, 3.0).scale(2.0);
+    /// assert_eq!(Point::new(10.0, 8.0, 6.0), scaled);
+    /// ```
     pub fn scale(&self, scale: f64) -> Self {
         Point {
             x: self.x * scale,
             y: self.y * scale,
             z: self.z * scale
+        }
+    }
+
+    /// Essentially the inverse of scale. Instead of scalar multiplication, this
+    /// computes scalar division.
+    ///
+    /// # Example
+    /// ```
+    /// # use yapre_graphics_core::space::Point;
+    /// let shrunk = Point::new(10.0, 8.0, 6.0).shrink(2.0);
+    /// assert_eq!(Point::new(5.0, 4.0, 3.0), shrunk);
+    /// ```
+    pub fn shrink(&self, shrinkage: f64) -> Self {
+        Point {
+            x: self.x / shrinkage,
+            y: self.y / shrinkage,
+            z: self.z / shrinkage
         }
     }
 
@@ -43,7 +73,26 @@ impl Point {
         self.dot(&self).sqrt()
     }
 
+    /// Calculates a vector in the same direction as self, but with a magnitude
+    /// equal to one. This is sometimes referred to as the direction vector, the
+    /// normal vector, or simply the direction of a vector.
+    ///
+    /// It is also worth noting that when called on a vector with length 0, this
+    /// function with return a clone of itself. This deviates from pure
+    /// mathematics, but avoids the division by zero and for our applications
+    /// this should work just fine.
+    ///
+    /// # Example
+    /// ```
+    /// # use yapre_graphics_core::space::Point;
+    /// use yapre_graphics_core::space::ORIGIN;
+    ///
+    /// assert_eq!(ORIGIN, ORIGIN.normalized());
+    /// assert_eq!(Point::new(0.0, 0.6, 0.8), Point::new(0.0, 3.0, 4.0).normalized());
+    /// ```
     pub fn normalized(&self) -> Self {
+        // For the zero vector we return the zero vector. This is not 100%
+        // mathematically accuration, but for our applications is appropriate.
         if *self == ORIGIN {
             return self.clone();
         }
@@ -82,6 +131,14 @@ impl Mul<f64> for Point {
 
     fn mul(self, other: f64) -> Self {
         self.scale(other)
+    }
+}
+
+impl Div<f64> for Point {
+    type Output = Self;
+
+    fn div(self, other: f64) -> Self {
+        self.shrink(other)
     }
 }
 
