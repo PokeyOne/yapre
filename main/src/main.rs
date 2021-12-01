@@ -125,7 +125,11 @@ fn main() -> Result<(), String> {
             canvas.fill_rect(button.rect.clone());
         }*/
 
-        triangle.shift(YaprePoint::new(0.06 * (animation_direction as f64), 0.0, 0.0));
+        triangle.shift(YaprePoint::new(
+            0.06 * (animation_direction as f64),
+            0.0,
+            0.0
+        ));
         animation_frame += animation_direction;
         if animation_frame >= animation_frame_max && animation_direction > 0 {
             animation_direction = -animation_direction;
@@ -133,9 +137,10 @@ fn main() -> Result<(), String> {
             animation_direction = -animation_direction;
         }
 
-        let img = cam.render(&triangle, (100, 100));
-        for x in 0..100 {
-            for y in 0..100 {
+        let rend_size = 300;
+        let img = cam.render(&triangle, (rend_size, rend_size));
+        for x in 0..rend_size {
+            for y in 0..rend_size {
                 let pix = img.get_pixel(y, x).color.clone();
                 // TODO: try rgba
                 canvas.set_draw_color(Color::RGB(pix.r, pix.g, pix.b));
@@ -145,7 +150,7 @@ fn main() -> Result<(), String> {
 
         canvas.present();
 
-        std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
+        std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 45));
     }
 
     println!("Hello, world!");
