@@ -65,8 +65,8 @@ fn main() -> Result<(), String> {
         Color::RGB(255, 255, 255)
     ));
 
-    let mut some_image: RawImage = RawImage::new(128, 128, PixelFormatEnum::RGB24)?;
-    println!("{:?}", some_image.save_to_temp_path());
+    //let mut some_image: RawImage = RawImage::new(128, 128, PixelFormatEnum::RGB24)?;
+    //println!("{:?}", some_image.save_to_temp_path());
 
     'main_loop: loop {
         for event in event_pump.poll_iter() {
