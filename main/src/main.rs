@@ -71,14 +71,10 @@ fn main() -> Result<(), String> {
                     keycode: Some(Keycode::Escape),
                     ..
                 } => break 'main_loop,
-                Event::MouseMotion {
-                    x,
-                    y,
-                    ..
-                } => {
+                Event::MouseMotion { x, y, .. } => {
                     mouse_x = x;
                     mouse_y = y;
-                },
+                }
                 Event::MouseButtonDown {
                     x,
                     y,
@@ -92,7 +88,7 @@ fn main() -> Result<(), String> {
                             println!("Button {} was clicked", &button.name);
                         }
                     }
-                },
+                }
                 _ => {}
             }
         }

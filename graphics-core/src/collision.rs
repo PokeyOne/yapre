@@ -6,7 +6,7 @@
 #[cfg(test)]
 mod tests;
 
-use crate::space::{Point, Triangle, Mesh, Line};
+use crate::space::{Line, Mesh, Point, Triangle};
 
 type Ray = Line;
 

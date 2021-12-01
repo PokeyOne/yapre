@@ -6,9 +6,13 @@
 #[cfg(test)]
 mod tests;
 
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, Div, Mul, Sub};
 
-pub const ORIGIN: Point = Point { x: 0.0, y: 0.0, z: 0.0 };
+pub const ORIGIN: Point = Point {
+    x: 0.0,
+    y: 0.0,
+    z: 0.0
+};
 
 /// The most basic unit of free space, respresenting a single location using
 /// the x, y, and z axes.
@@ -106,11 +110,7 @@ impl Add for Point {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Point::new(
-            self.x + other.x,
-            self.y + other.y,
-            self.z + other.z
-        )
+        Point::new(self.x + other.x, self.y + other.y, self.z + other.z)
     }
 }
 
@@ -118,11 +118,7 @@ impl Sub for Point {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
-        Point::new(
-            self.x - other.x,
-            self.y - other.y,
-            self.z - other.z
-        )
+        Point::new(self.x - other.x, self.y - other.y, self.z - other.z)
     }
 }
 
@@ -190,7 +186,10 @@ pub struct Line {
 
 impl Line {
     pub fn new(location: Point, direction: Point) -> Self {
-        Line { location, direction: direction.normalized() }
+        Line {
+            location,
+            direction: direction.normalized()
+        }
     }
 
     pub fn from_points(a: Point, b: Point) -> Self {

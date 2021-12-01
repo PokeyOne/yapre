@@ -47,7 +47,14 @@ fn test_point_scaling_function() {
     assert_eq!(a, a.scale(1.0));
     assert_eq!(ORIGIN, a.scale(0.0));
     assert_eq!(ORIGIN, ORIGIN.scale(1000.0));
-    assert_eq!(Point { x: 3.0, y: 6.0, z: 9.0 }, a.scale(3.0));
+    assert_eq!(
+        Point {
+            x: 3.0,
+            y: 6.0,
+            z: 9.0
+        },
+        a.scale(3.0)
+    );
 }
 
 #[test]
@@ -57,7 +64,14 @@ fn test_point_scaling_op() {
     assert_eq!(a, a * 1.0);
     assert_eq!(ORIGIN, a * 0.0);
     assert_eq!(ORIGIN, ORIGIN * 1000.0);
-    assert_eq!(Point { x: 3.0, y: 6.0, z: 9.0 }, a * 3.0);
+    assert_eq!(
+        Point {
+            x: 3.0,
+            y: 6.0,
+            z: 9.0
+        },
+        a * 3.0
+    );
 }
 
 #[test]
@@ -139,9 +153,5 @@ fn test_triangle_equality_not_equal() {
 #[test]
 #[should_panic]
 fn triangle_with_duplicate_points_should_panic() {
-    let a = Triangle::new([
-        ORIGIN,
-        ORIGIN,
-        Point::new(1.0, 0.0, 0.0)
-    ]);
+    let a = Triangle::new([ORIGIN, ORIGIN, Point::new(1.0, 0.0, 0.0)]);
 }

@@ -1,2 +1,2 @@
-pub mod space;
 pub mod collision;
+pub mod space;
