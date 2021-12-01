@@ -11,11 +11,11 @@ use crate::space::{Line, Mesh, Point, Triangle};
 type Ray = Line;
 
 pub trait Collidable {
-    fn intersects(&self, ray: &Ray) -> Option<Point>;
+    fn intersection_point(&self, ray: &Ray) -> Option<Point>;
 }
 
 impl Collidable for Triangle {
-    fn intersects(&self, ray: &Ray) -> Option<Point> {
+    fn intersection_point(&self, ray: &Ray) -> Option<Point> {
         let e1 = self.points[1] - self.points[0];
         let e2 = self.points[2] - self.points[0];
         let p = ray.direction().cross(&e2);
