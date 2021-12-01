@@ -8,7 +8,7 @@ mod tests;
 
 use crate::space::{Line, Mesh, Point, Triangle};
 
-type Ray = Line;
+pub type Ray = Line;
 
 pub struct Collision {
     pub point: Point,
