@@ -12,6 +12,8 @@ use sdl2::pixels::Color;
 use sdl2::rect::{Point, Rect};
 use std::time::Duration;
 
+use yapre::images::RawImage;
+
 // TODO: it would be nice to seperate out a bunch of UI type stuff to build
 // quick and simple UI components.
 
@@ -62,6 +64,8 @@ fn main() -> Result<(), String> {
         Rect::new(20, 80, 200, 40),
         Color::RGB(255, 255, 255)
     ));
+
+    let mut some_image: RawImage = RawImage::new(128, 128, PixelFormatEnum::RGB24)?;
 
     'main_loop: loop {
         for event in event_pump.poll_iter() {

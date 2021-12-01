@@ -3,6 +3,8 @@ use sdl2::render::Canvas;
 use sdl2::surface::Surface;
 use sdl2::rect::Point as SdlPoint;
 
+use uuid::Uuid;
+
 pub struct RawImage<'a> {
     canvas: Canvas<Surface<'a>>
 }
@@ -21,4 +23,6 @@ impl RawImage<'_> {
 
         Ok(())
     }
+
+    pub fn save_to_path()
 }
