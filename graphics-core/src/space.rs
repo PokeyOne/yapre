@@ -73,6 +73,14 @@ impl Point {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 
+    pub fn cross(&self, other: &Point) -> Point {
+        Point {
+            x: self.y * other.z - self.z * other.y,
+            y: self.z * other.x - self.x * other.z,
+            z: self.x * other.y - self.y * other.x
+        }
+    }
+
     pub fn length(&self) -> f64 {
         self.dot(&self).sqrt()
     }
@@ -114,6 +122,30 @@ impl Add for Point {
     }
 }
 
+impl Add<&Point> for Point {
+    type Output = Self;
+
+    fn add(self, other: &Point) -> Self {
+        Point::new(self.x + other.x, self.y + other.y, self.z + other.z)
+    }
+}
+
+impl Add<Point> for &Point {
+    type Output = Point;
+
+    fn add(self, other: Point) -> Point {
+        Point::new(self.x + other.x, self.y + other.y, self.z + other.z)
+    }
+}
+
+impl Add<&Point> for &Point {
+    type Output = Point;
+
+    fn add(self, other: &Point) -> Point {
+        Point::new(self.x + other.x, self.y + other.y, self.z + other.z)
+    }
+}
+
 impl Sub for Point {
     type Output = Self;
 
@@ -122,10 +154,42 @@ impl Sub for Point {
     }
 }
 
+impl Sub<&Point> for Point {
+    type Output = Self;
+
+    fn sub(self, other: &Point) -> Self {
+        Point::new(self.x - other.x, self.y - other.y, self.z - other.z)
+    }
+}
+
+impl Sub<Point> for &Point {
+    type Output = Point;
+
+    fn sub(self, other: Point) -> Point {
+        Point::new(self.x - other.x, self.y - other.y, self.z - other.z)
+    }
+}
+
+impl Sub<&Point> for &Point {
+    type Output = Point;
+
+    fn sub(self, other: &Point) -> Point {
+        Point::new(self.x - other.x, self.y - other.y, self.z - other.z)
+    }
+}
+
 impl Mul<f64> for Point {
     type Output = Self;
 
     fn mul(self, other: f64) -> Self {
+        self.scale(other)
+    }
+}
+
+impl Mul<f64> for &Point {
+    type Output = Point;
+
+    fn mul(self, other: f64) -> Point {
         self.scale(other)
     }
 }
@@ -197,6 +261,14 @@ impl Line {
             location: a,
             direction: (b - a).normalized()
         }
+    }
+
+    pub fn location(&self) -> &Point {
+        &self.location
+    }
+
+    pub fn direction(&self) -> &Point {
+        &self.direction
     }
 }
 

@@ -93,6 +93,32 @@ fn point_dot_product() {
 }
 
 #[test]
+fn point_cross_product_simple() {
+    let a = Point::new(1.0, 0.0, 0.0);
+    let b = Point::new(0.0, 1.0, 0.0);
+    let expected_cross = Point::new(0.0, 0.0, 1.0);
+
+    assert_eq!(expected_cross, a.cross(&b));
+}
+
+#[test]
+fn point_cross_product_complex() {
+    let a = Point::new(1.0, 2.0, 3.0);
+    let b = Point::new(3.0, 2.0, 1.0);
+    let expected_cross = Point::new(-4.0, 8.0, -4.0);
+
+    assert_eq!(expected_cross, a.cross(&b));
+}
+
+#[test]
+fn point_cross_product_same_vector() {
+    let a = Point::new(1.0, 2.0, 3.0);
+    let b = Point::new(1.0, 2.0, 3.0);
+
+    assert_eq!(ORIGIN, a.cross(&b));
+}
+
+#[test]
 fn test_point_equality() {
     let a = ORIGIN;
     let b = ORIGIN;
