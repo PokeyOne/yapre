@@ -1,3 +1,8 @@
+#[cfg(test)]
+mod tests;
+
+use std::path::Path;
+
 use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::render::Canvas;
 use sdl2::surface::Surface;
@@ -24,5 +29,20 @@ impl RawImage<'_> {
         Ok(())
     }
 
-    pub fn save_to_path()
+    /// Output the image to a file in a temporary directory then return the
+    /// path. This method returns a Result and if the file it save it will
+    /// return the path to the file, and if it fails then it will be a string
+    /// with an error method.
+    pub fn save_to_temp_path(&self) -> Result<String, String> {
+        let path_string = generate_random_temp_path();
+        let path = Path::new(&path_string);
+        println!("Path would be {:?}", path_string);
+
+        Err(String::from("Not implemented"))
+    }
+}
+
+fn generate_random_temp_path() -> String {
+    let uuid = Uuid::new_v4();
+    format!("./tmp-yapre/temp_image_{}.bmp", uuid)
 }

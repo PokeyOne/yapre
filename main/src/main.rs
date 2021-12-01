@@ -8,11 +8,11 @@ mod licensing;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseButton;
-use sdl2::pixels::Color;
+use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::rect::{Point, Rect};
 use std::time::Duration;
 
-use yapre::images::RawImage;
+use yapre_graphics_core::images::RawImage;
 
 // TODO: it would be nice to seperate out a bunch of UI type stuff to build
 // quick and simple UI components.
@@ -66,6 +66,7 @@ fn main() -> Result<(), String> {
     ));
 
     let mut some_image: RawImage = RawImage::new(128, 128, PixelFormatEnum::RGB24)?;
+    println!("{:?}", some_image.save_to_temp_path());
 
     'main_loop: loop {
         for event in event_pump.poll_iter() {
