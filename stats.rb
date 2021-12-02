@@ -28,6 +28,8 @@ end
 
 total_count = 0
 get_rs_files.each do |file|
+  next if file.include?("target")
+
   intermediate_count = calculate_file_line_count(file)
   total_count += intermediate_count
   puts "#{file} #{intermediate_count}"
@@ -48,6 +50,13 @@ File.open("README.md", "r") do |f|
 end
 temp.close
 FileUtils.mv(temp.path, "README.md")
+
+for arg in ARGV do
+  if arg == "--nocommit"
+    puts "not committing changes to the readme"
+    exit
+  end
+end
 
 puts "checking git"
 git_status = `git status --porcelain`

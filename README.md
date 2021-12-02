@@ -2,7 +2,7 @@
 
 ![gpl 3 badge](https://img.shields.io/badge/license-GPL%203.0-blue)
 ![repo size](https://img.shields.io/github/repo-size/PokeyOne/yapre)
-![lines of code](https://img.shields.io/badge/lines%20of%20rust-93859-informational)
+![lines of code](https://img.shields.io/badge/lines%20of%20rust-1105-informational)
 
 I think this is the 5th time (?) that I have started working on a ray-tracing
 rendering engine. Hopefully this time with more follow through as Rust makes
