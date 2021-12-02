@@ -1,7 +1,21 @@
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require "fileutils"
 require "tempfile"
+
+do_commit = true
+do_change = true
+for arg in ARGV do
+  if arg == "--nocommit" || arg == "-nc"
+    do_commit = false
+  elsif arg == "--nochange" || arg == "--nop"
+    do_change = false
+  elsif arg == "--help" || arg == "-h"
+    puts "Usage: stats.rb [--nocommit] [--nochange]"
+    exit
+  end
+end
 
 # This is a simple script to count the number of lines in all Rust files in the
 # current repository. It is not meant to be super efficient, and is mostly
@@ -37,6 +51,11 @@ end
 
 puts "Total: #{total_count}"
 
+unless do_change
+  puts "Skipping change"
+  exit 0
+end
+
 puts "updating the readme badge..."
 temp = Tempfile.new "readme_temp.md"
 File.open("README.md", "r") do |f|
@@ -51,11 +70,9 @@ end
 temp.close
 FileUtils.mv(temp.path, "README.md")
 
-for arg in ARGV do
-  if arg == "--nocommit"
-    puts "not committing changes to the readme"
-    exit
-  end
+unless do_commit
+  puts "Not committing changes"
+  exit 0
 end
 
 puts "checking git"
