@@ -10,8 +10,20 @@ pub enum TransformStep {
     Scale(Vector, Vector) // origin and amount
 }
 
+impl Transform {
+    pub fn apply(&self, point: &Point) -> Point {
+        let mut result: Point = point.clone();
+
+        for step in &self.sequence {
+            result = step.apply(&result);
+        }
+
+        result
+    }
+}
+
 impl TransformStep {
-    pub fn apply(&self, point: Point) -> Point {
+    pub fn apply(&self, point: &Point) -> Point {
         match self {
             &TransformStep::Translate(ref v) => point + v, // TODO: this
             &TransformStep::Rotate(ref u, ref v) => point.rotated(u.as_arr(), v),

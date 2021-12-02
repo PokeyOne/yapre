@@ -11,6 +11,8 @@ mod object;
 mod scene;
 mod transform;
 
+use transform::Transform;
+
 use std::ops::{Add, Div, Mul, Sub};
 
 pub const ORIGIN: Point = Point {
@@ -187,6 +189,10 @@ impl Point {
 
         Point::new(x, y, z)
     }
+
+    pub fn transformed(&self, transform: &Transform) -> Self {
+        transform.apply(self)
+    }
 }
 
 impl Add for Point {
@@ -314,6 +320,16 @@ impl Triangle {
         }
 
         Point::new(x / 3.0, y / 3.0, z / 3.0)
+    }
+
+    pub fn transformed_triangle(&self, transform: &Transform) -> Self {
+        let mut points = self.points.clone();
+
+        for i in 0..3 {
+            points[i] = self.points[i].transformed(transform);
+        }
+
+        Triangle::new(points)
     }
 }
 

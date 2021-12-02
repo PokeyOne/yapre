@@ -1,3 +1,8 @@
+use super::{
+    Triangle,
+    transform::Transform
+};
+
 pub struct Mesh {
     pub triangles: Vec<Triangle>
 }

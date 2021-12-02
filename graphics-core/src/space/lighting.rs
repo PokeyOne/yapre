@@ -1,3 +1,6 @@
+use super::{Point, Vector};
+use crate::images::Color;
+
 // TODO: Most of this trait was just what CoPilot suggested, and not sure exactly
 //       how lighting will be implemented.
 pub trait Light {
@@ -6,4 +9,10 @@ pub trait Light {
     fn get_position(&self) -> Point;
     fn get_direction(&self) -> Vector; // TODO: Not sure if this is needed
     fn get_type(&self) -> LightType;
+}
+
+pub enum LightType {
+    Point,
+    Directional,
+    Spot,
 }
