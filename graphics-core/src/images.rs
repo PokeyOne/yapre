@@ -168,5 +168,5 @@ impl RawImage {
 
 fn generate_random_temp_path() -> String {
     let uuid = Uuid::new_v4();
-    format!("./tmp-yapre/temp_image_{}.bmp", uuid)
+    format!("./tmp-yapre/temp_image_{}.png", uuid)
 }
