@@ -6,6 +6,11 @@
 #[cfg(test)]
 mod tests;
 
+mod lighting;
+mod object;
+mod scene;
+mod transform;
+
 use std::ops::{Add, Div, Mul, Sub};
 
 pub const ORIGIN: Point = Point {
@@ -18,7 +23,7 @@ pub const ORIGIN: Point = Point {
 /// correct to refer to something as a vector than a point. For example,
 /// when referring to the direction of a ray, it is more accurate to call it
 /// a vector than a point.
-type Vector = Point;
+pub type Vector = Point;
 
 /// The most basic unit of free space, respresenting a single location using
 /// the x, y, and z axes.
@@ -158,6 +163,29 @@ impl Point {
         let z_rot = z_rot + origin.z;
 
         Point::new(x_rot, y_rot, z_rot)
+    }
+
+    pub fn as_arr(&self) -> [f64; 3] {
+        [self.x, self.y, self.z]
+    }
+
+    pub fn point_origin_scaled(&self, origin: &Point, scale: &Vector) -> Point {
+        // Find point relative to origin
+        let x = self.x - origin.x;
+        let y = self.y - origin.y;
+        let z = self.z - origin.z;
+
+        // Scale point relative to origin
+        let x = x * scale.x;
+        let y = y * scale.y;
+        let z = z * scale.z;
+
+        // Translate point back to origin
+        let x = x + origin.x;
+        let y = y + origin.y;
+        let z = z + origin.z;
+
+        Point::new(x, y, z)
     }
 }
 
