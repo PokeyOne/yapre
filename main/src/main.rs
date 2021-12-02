@@ -15,7 +15,13 @@ use std::time::Duration;
 use yapre_graphics_core::{
     images::{RawImage, Color as YapreColor},
     camera::{Renderer, OrthographicCamera},
-    space::{Triangle, Point as YaprePoint, ORIGIN}
+    space::{
+        Triangle,
+        Point as YaprePoint,
+        ORIGIN,
+        scene::Scene,
+        object::{Object, Mesh}
+    },
 };
 
 // TODO: it would be nice to seperate out a bunch of UI type stuff to build
@@ -74,6 +80,7 @@ fn main() -> Result<(), String> {
         YaprePoint::new(1.0, -1.0, 1.0),
         YaprePoint::new(-1.0, -1.0, 1.0)
     ]);
+    // TODO: create the object and scene
     let mut cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
     let mut animation_frame: i32 = 0;
     let animation_frame_max: i32 = 25;
@@ -145,9 +152,12 @@ fn main() -> Result<(), String> {
         }
 
         let rend_size = 300;
-        // TODO: update this to use scene
-        /*
-        let img = cam.render(&triangle.rotated([0.0, animation_rotation, 0.0], &triangle.geometric_center()), (rend_size, rend_size));
+
+        // TODO: This is a hack.
+        let obj = Object::new(Mesh::new(vec![triangle.clone()]));
+        let mut scn = Scene::new_empty();
+        scn.objects.push(obj);
+        let img = cam.render(&scn, (rend_size, rend_size));
         for x in 0..rend_size {
             for y in 0..rend_size {
                 let pix = img.get_pixel(y, x).color.clone();
@@ -155,7 +165,7 @@ fn main() -> Result<(), String> {
                 canvas.set_draw_color(Color::RGB(pix.r, pix.g, pix.b));
                 canvas.draw_point(Point::new((x + 200) as i32, (y + 200) as i32));
             }
-        }*/
+        }
 
         canvas.present();
 

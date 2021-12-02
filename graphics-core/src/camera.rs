@@ -20,7 +20,7 @@ impl Camera {
 pub struct OrthographicCamera {
     location: Point,
     width: f64,
-    height: f64 // TODO: Direction
+    height: f64 // TODO: Direction, OutputImageSpec
 }
 
 impl OrthographicCamera {

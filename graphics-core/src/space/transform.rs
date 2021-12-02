@@ -11,6 +11,16 @@ pub enum TransformStep {
 }
 
 impl Transform {
+    pub fn new() -> Transform {
+        Transform {
+            sequence: Vec::new()
+        }
+    }
+
+    pub fn add_step(&mut self, step: TransformStep) {
+        self.sequence.push(step);
+    }
+
     pub fn apply(&self, point: &Point) -> Point {
         let mut result: Point = point.clone();
 

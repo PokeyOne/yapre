@@ -31,6 +31,18 @@ pub struct Object {
 }
 
 impl Object {
+    pub fn new(mesh: Mesh) -> Object {
+        Object {
+            mesh,
+            transform: Transform::new()
+        }
+    }
+
+    pub fn squash_transforms(&mut self) {
+        self.mesh = self.mesh.transformed_mesh(&self.transform);
+        self.transform = Transform::new();
+    }
+
     // TODO: It may be a useful optimization at some point to cache the transformed mesh.
     pub fn triangles(&self) -> Vec<Triangle> {
         self.mesh.transformed_mesh(&self.transform).triangles
