@@ -15,7 +15,7 @@ impl TransformStep {
         match self {
             &TransformStep::Translate(ref v) => point + v, // TODO: this
             &TransformStep::Rotate(ref u, ref v) => point.rotated(u.as_arr(), v),
-            &TransformStep::Scale(ref u, ref v) => point.point_origin_scale(u, v)
+            &TransformStep::Scale(ref u, ref v) => point.point_origin_scaled(u, v)
         }
     }
 }
