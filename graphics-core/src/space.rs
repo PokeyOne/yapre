@@ -283,6 +283,7 @@ impl Div<f64> for Point {
     }
 }
 
+// TODO: add material to this
 impl Triangle {
     pub fn new(points: [Point; 3]) -> Self {
         assert_ne!(points[0], points[1]);

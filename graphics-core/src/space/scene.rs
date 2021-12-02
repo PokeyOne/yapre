@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use crate::{
     camera::Camera,
     space::{
@@ -29,5 +32,13 @@ impl Scene {
 
     pub fn new_empty() -> Self {
         Self::new(Vec::new(), Vec::new(), Vec::new())
+    }
+
+    pub fn add_object(&mut self, object: Object) {
+        self.objects.push(object);
+    }
+
+    pub fn get_primary_camera(&self) -> &Camera {
+        &self.primary_camera
     }
 }

@@ -7,6 +7,7 @@ use std::fs::File;
 use std::io::BufWriter;
 use std::fmt::{Formatter, Error as FormatterError, Debug};
 use uuid::Uuid;
+use rand;
 
 pub const WHITE: Color = Color {
     r: 255,
@@ -65,6 +66,15 @@ impl Color {
 
     pub fn rgba(&self) -> u32 {
         (self.r as u32) << 24 | (self.g as u32) << 16 | (self.b as u32) << 8 | (self.a as u32)
+    }
+
+    pub fn random() -> Color {
+        Color::new(
+            rand::random::<u8>(),
+            rand::random::<u8>(),
+            rand::random::<u8>(),
+            255
+        )
     }
 }
 

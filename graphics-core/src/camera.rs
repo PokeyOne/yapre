@@ -37,6 +37,14 @@ pub trait Renderer {
     fn render(&self, scene: &Scene, image_size: (usize, usize)) -> RawImage;
 }
 
+impl Renderer for Camera {
+    fn render(&self, scene: &Scene, image_size: (usize, usize)) -> RawImage {
+        match self {
+            Camera::Ortho(camera) => camera.render(scene, image_size)
+        }
+    }
+}
+
 impl Renderer for OrthographicCamera {
     fn render(&self, scene: &Scene, image_size: (usize, usize)) -> RawImage {
         let mut output_image = RawImage::new(image_size.0, image_size.1);
