@@ -1,7 +1,10 @@
 #[cfg(test)]
 mod tests;
 
+use png::Encoder;
 use std::path::Path;
+use std::fs::File;
+use std::io::BufWriter;
 use std::fmt::{Formatter, Error as FormatterError, Debug};
 use uuid::Uuid;
 
@@ -109,6 +112,14 @@ impl RawImage {
         self.pixels[row][col].color = c;
     }
 
+    pub fn get_width(&self) -> usize {
+        self.pixels[0].len()
+    }
+
+    pub fn get_height(&self) -> usize {
+        self.pixels.len()
+    }
+
     /// Output the image to a file in a temporary directory then return the
     /// path. This method returns a Result and if the file it save it will
     /// return the path to the file, and if it fails then it will be a string
@@ -119,6 +130,39 @@ impl RawImage {
         println!("Path would be {:?}", path_string);
 
         Err(String::from("Not implemented"))
+    }
+
+    pub fn get_image_data(&self) -> Vec<u8> {
+        let mut data: Vec<u8> = Vec::new();
+        data.reserve(self.get_width() * self.get_height() * 4);
+
+        for row in 0..self.get_height() {
+            for col in 0..self.get_width() {
+                let pixel = self.get_pixel(row, col);
+                data.push(pixel.color.r);
+                data.push(pixel.color.g);
+                data.push(pixel.color.b);
+                data.push(pixel.color.a);
+            }
+        }
+
+        data
+    }
+
+    pub fn save_image_to_path(&self, path: &str) -> Result<(), String> {
+        let path = Path::new(path);
+        let file = File::create(path).map_err(|e| format!("{}", e))?;
+        let ref mut w = BufWriter::new(file);
+
+        let mut encoder = Encoder::new(w, self.get_width() as u32, self.get_height() as u32);
+        encoder.set_color(png::ColorType::Rgba);
+        encoder.set_depth(png::BitDepth::Eight);
+        let mut writer = encoder.write_header().map_err(|e| format!("{}", e))?;
+
+        let data = self.get_image_data();
+        writer.write_image_data(&data).map_err(|e| format!("{}", e))?;
+
+        Ok(())
     }
 }
 
