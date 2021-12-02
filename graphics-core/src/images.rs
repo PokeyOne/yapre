@@ -126,10 +126,10 @@ impl RawImage {
     /// with an error method.
     pub fn save_to_temp_path(&self) -> Result<String, String> {
         let path_string = generate_random_temp_path();
-        let _path = Path::new(&path_string);
-        println!("Path would be {:?}", path_string);
 
-        Err(String::from("Not implemented"))
+        self.save_image_to_path(&path_string)?;
+
+        Ok(path_string)
     }
 
     pub fn get_image_data(&self) -> Vec<u8> {
