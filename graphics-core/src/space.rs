@@ -14,6 +14,12 @@ pub const ORIGIN: Point = Point {
     z: 0.0
 };
 
+/// An alias for a point because sometimes sometimes it is more semantically
+/// correct to refer to something as a vector than a point. For example,
+/// when referring to the direction of a ray, it is more accurate to call it
+/// a vector than a point.
+type Vector = Point;
+
 /// The most basic unit of free space, respresenting a single location using
 /// the x, y, and z axes.
 #[derive(Debug, Copy, Clone)]
@@ -341,8 +347,4 @@ impl Line {
     pub fn direction(&self) -> &Point {
         &self.direction
     }
-}
-
-pub struct Mesh {
-    tris: Vec<Triangle>
 }

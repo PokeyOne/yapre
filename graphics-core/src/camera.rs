@@ -6,6 +6,13 @@ pub enum Camera {
     Ortho(OrthographicCamera)
 }
 
+impl Camera {
+    pub fn new_default() -> Camera {
+        // TODO: The default camera should be perspective, but that doesn't exist yet.
+        Camera::Ortho(OrthographicCamera::new_default())
+    }
+}
+
 pub trait Renderer {
     // TODO: In the future this should be a Scene that has Mesh objects
     // TODO: Change to triangle pointer
@@ -15,12 +22,16 @@ pub trait Renderer {
 pub struct OrthographicCamera {
     location: Point,
     width: f64,
-    height: f64
+    height: f64 // TODO: Direction
 }
 
 impl OrthographicCamera {
     pub fn new(location: Point, width: f64, height: f64) -> Self {
         OrthographicCamera { location, width, height }
+    }
+
+    pub fn new_default() -> Self {
+        OrthographicCamera::new(Point::new(0.0, 0.0, 0.0), 1.0, 1.0)
     }
 }
 
