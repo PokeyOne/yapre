@@ -6,10 +6,10 @@
 #[cfg(test)]
 mod tests;
 
-mod lighting;
-mod object;
-mod scene;
-mod transform;
+pub mod lighting;
+pub mod object;
+pub mod scene;
+pub mod transform;
 
 use transform::Transform;
 

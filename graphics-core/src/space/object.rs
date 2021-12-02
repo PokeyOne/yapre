@@ -29,3 +29,10 @@ pub struct Object {
     pub mesh: Mesh,
     pub transform: Transform
 }
+
+impl Object {
+    // TODO: It may be a useful optimization at some point to cache the transformed mesh.
+    pub fn triangles(&self) -> Vec<Triangle> {
+        self.mesh.transformed_mesh(&self.transform).triangles
+    }
+}

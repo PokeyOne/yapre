@@ -145,6 +145,8 @@ fn main() -> Result<(), String> {
         }
 
         let rend_size = 300;
+        // TODO: update this to use scene
+        /*
         let img = cam.render(&triangle.rotated([0.0, animation_rotation, 0.0], &triangle.geometric_center()), (rend_size, rend_size));
         for x in 0..rend_size {
             for y in 0..rend_size {
@@ -153,7 +155,7 @@ fn main() -> Result<(), String> {
                 canvas.set_draw_color(Color::RGB(pix.r, pix.g, pix.b));
                 canvas.draw_point(Point::new((x + 200) as i32, (y + 200) as i32));
             }
-        }
+        }*/
 
         canvas.present();
 
