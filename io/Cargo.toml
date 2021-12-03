@@ -7,4 +7,3 @@ edition = "2021"
 
 [dependencies]
 yapre-graphics-core = { path = "../graphics-core" }
-obj = "0.10.2"

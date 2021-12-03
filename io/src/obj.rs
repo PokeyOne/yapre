@@ -1,30 +1,13 @@
 #[cfg(test)]
 mod tests;
 
-use obj;
-use obj::{Group, Obj, ObjData, ObjError, SimplePolygon};
 use std::io::Write;
 use std::path::Path;
-use yapre_graphics_core::space::object::Object as ObjectCore;
+use yapre_graphics_core::space::object::Object;
 use yapre_graphics_core::space::Point;
 
-pub fn load_obj(path: &str) -> Result<(), ObjError> {
-    let raw_obj: Obj = Obj::load(Path::new(path))?;
-
-    for object in raw_obj.data.objects {
-        println!("analyzing object {:?}", object.name);
-
-        for group in object.groups {
-            println!("  analyzing group {:?} ({})", group.name, group.index);
-
-            for poly in group.polys {
-                println!("    polygon {:?}", poly);
-            }
-        }
-    }
-
-    panic!("not implemented yet")
-}
+// TODO: load_obj_from_contents
+// TODO: load_obj_from_file
 
 struct PointRegistry {
     points: Vec<Point>
@@ -58,7 +41,7 @@ impl PointRegistry {
     }
 }
 
-pub fn generate_obj_file(object: &ObjectCore) -> String {
+pub fn generate_obj_file(object: &Object) -> String {
     let mut registry = PointRegistry::new();
     let mut triangle_data: Vec<[usize; 3]> = Vec::new();
     for tri in object.triangles() {
@@ -88,7 +71,7 @@ pub fn generate_obj_file(object: &ObjectCore) -> String {
     output_file_contents
 }
 
-pub fn save_obj_file(path: &str, object: &ObjectCore) -> Result<(), String> {
+pub fn save_obj_file(path: &str, object: &Object) -> Result<(), String> {
     let mut output_file = std::fs::File::create(path).map_err(|e| e.to_string())?;
     output_file
         .write_all(generate_obj_file(object).as_bytes())

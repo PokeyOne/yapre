@@ -34,7 +34,7 @@ fn test_generate_obj_file_for_one_triangle() {
         Point::new(0.0, 1.0, 0.0)
     ]);
     let mesh = Mesh::new(vec![t]);
-    let object = ObjectCore::new(mesh);
+    let object = Object::new(mesh);
 
     let generated_obj_file = generate_obj_file(&object);
 
