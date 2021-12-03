@@ -3,11 +3,65 @@ mod tests;
 
 use std::io::Write;
 use std::path::Path;
-use yapre_graphics_core::space::object::Object;
-use yapre_graphics_core::space::Point;
+use yapre_graphics_core::space::object::{Mesh, Object};
+use yapre_graphics_core::space::{Point, Triangle};
 
-// TODO: load_obj_from_contents
 // TODO: load_obj_from_file
+
+macro_rules! unwrap_parse_type_or_return {
+    ($expr:expr, $ty:ty) => {
+        match $expr {
+            Some(val) => match val.parse::<$ty>() {
+                Ok(val) => val,
+                Err(_) => return Err(format!("could not parse {} from {}", std::any::type_name::<$ty>(), val)),
+            },
+            None => return Err(format!("could not get next token to parse {}", std::any::type_name::<$ty>())),
+        }
+    };
+}
+
+pub fn load_object_from_contents(contents: String) -> Result<Object, String> {
+    let mut point_registry = PointRegistry::new();
+    let mut triangle_data: Vec<[usize; 3]> = Vec::new();
+
+    // Process each line of the file
+    for line in contents.lines() {
+        let mut line_iter = line.split_whitespace();
+        let line_type = line_iter.next().unwrap();
+
+        match line_type {
+            "v" => {
+                let x = unwrap_parse_type_or_return!(line_iter.next(), f64);
+                let y = unwrap_parse_type_or_return!(line_iter.next(), f64);
+                let z = unwrap_parse_type_or_return!(line_iter.next(), f64);
+                point_registry.add_point(Point::new(x, y, z));
+            }
+            "f" => {
+                let a = unwrap_parse_type_or_return!(line_iter.next(), usize);
+                let b = unwrap_parse_type_or_return!(line_iter.next(), usize);
+                let c = unwrap_parse_type_or_return!(line_iter.next(), usize);
+                triangle_data.push([a - 1, b - 1, c - 1]);
+            }
+            _ => {} // comments and other stuff
+        }
+    }
+
+    // Now un-anonymize the points
+    let mut triangles = Vec::new();
+    for td in triangle_data {
+        triangles.push(Triangle::new([
+            // Unwrap is assumed safe because we just added the points to the
+            // registry
+            point_registry.get_point(td[0]).unwrap(),
+            point_registry.get_point(td[1]).unwrap(),
+            point_registry.get_point(td[2]).unwrap()
+        ]));
+    }
+
+    // Construct the mesh and the object
+    let mesh = Mesh::new(triangles);
+    Ok(Object::new(mesh))
+}
 
 struct PointRegistry {
     points: Vec<Point>
