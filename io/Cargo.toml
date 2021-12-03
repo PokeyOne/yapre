@@ -6,3 +6,5 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+yapre-graphics-core = { path = "../graphics-core" }
+obj = "0.10.2"
