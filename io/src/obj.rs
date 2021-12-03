@@ -9,15 +9,17 @@ use yapre_graphics_core::space::{Point, Triangle};
 
 pub fn load_object_from_file(path: &str) -> Result<Object, String> {
     let path = Path::new(path);
+    println!("Working directory: {:?}", Path::new(".").canonicalize());
+    println!("Loading object from file: {}", path.canonicalize().unwrap().display());
     let mut file = match File::open(path) {
         Ok(file) => file,
-        Err(e) => return Err(format!("{}", e)),
+        Err(e) => return Err(format!("opening file: {}", e)),
     };
 
     let mut contents = String::new();
     match file.read_to_string(&mut contents) {
         Ok(contents) => contents,
-        Err(e) => return Err(format!("{}", e)),
+        Err(e) => return Err(format!("reading file: {}", e)),
     };
 
     load_object_from_contents(contents)
@@ -42,7 +44,10 @@ pub fn load_object_from_contents(contents: String) -> Result<Object, String> {
     // Process each line of the file
     for line in contents.lines() {
         let mut line_iter = line.split_whitespace();
-        let line_type = line_iter.next().unwrap();
+        let line_type = match line_iter.next() {
+            Some(line_type) => line_type,
+            None => continue,
+        };
 
         match line_type {
             "v" => {

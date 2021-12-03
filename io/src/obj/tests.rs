@@ -69,3 +69,13 @@ fn test_generate_obj_from_file_with_one_triangle() {
         Point::new(0.0, 1.0, 0.0)
     );
 }
+
+#[test]
+fn load_complex_object_from_file() -> Result<(), String> {
+    let path = "./test-resources/test_object.obj";
+    let object = load_object_from_file(path)?;
+
+    assert_eq!(object.triangles().len(), 12);
+
+    Ok(())
+}
