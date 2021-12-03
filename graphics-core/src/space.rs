@@ -12,6 +12,7 @@ pub mod scene;
 pub mod transform;
 
 use transform::Transform;
+use crate::material::Material;
 
 use std::ops::{Add, Div, Mul, Sub};
 
@@ -49,7 +50,8 @@ impl PartialEq for Point {
 
 #[derive(Debug, Clone)]
 pub struct Triangle {
-    pub points: [Point; 3]
+    pub points: [Point; 3],
+    material: Option<Material>
 }
 
 impl Point {
@@ -290,13 +292,21 @@ impl Triangle {
         assert_ne!(points[0], points[2]);
         assert_ne!(points[1], points[2]);
 
-        Triangle { points }
+        Triangle { points, material: None as Option<Material> }
     }
 
     pub fn shift(&mut self, by: Point) {
         for i in 0..3 {
             self.points[i] = self.points[i] + by;
         }
+    }
+
+    pub fn set_material(&mut self, material: Material) {
+        self.material = Some(material);
+    }
+
+    pub fn material(&self) -> Option<&Material> {
+        self.material.as_ref()
     }
 
     /// Rotates the triangle around the given point by the given angle.
