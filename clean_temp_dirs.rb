@@ -2,4 +2,4 @@
 
 # This script could honestly be a shell script,
 # but oh well.
-`rm ./graphics-core/tmp-yapre/*`
+`rm -v ./graphics-core/tmp-yapre/*`
