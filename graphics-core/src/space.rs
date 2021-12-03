@@ -285,7 +285,6 @@ impl Div<f64> for Point {
     }
 }
 
-// TODO: add material to this
 impl Triangle {
     pub fn new(points: [Point; 3]) -> Self {
         assert_ne!(points[0], points[1]);
@@ -334,13 +333,13 @@ impl Triangle {
     }
 
     pub fn transformed_triangle(&self, transform: &Transform) -> Self {
-        let mut points = self.points.clone();
+        let mut result = self.clone();
 
         for i in 0..3 {
-            points[i] = self.points[i].transformed(transform);
+            result.points[i] = result.points[i].transformed(transform);
         }
 
-        Triangle::new(points)
+        result
     }
 }
 

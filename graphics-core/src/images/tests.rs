@@ -40,3 +40,13 @@ fn test_color_to_rgba() {
     let color = Color::new(0xFE, 0xFB, 0xFF, 0xFF);
     assert_eq!(color.rgba(), 0xFEFBFFFF);
 }
+
+#[test]
+fn test_random_color() {
+    let a = Color::random();
+    let b = Color::random();
+    let c = Color::random();
+
+    // the chances that all three colours are equal is very low
+    assert!(!(a == b && b == c));
+}

@@ -5,6 +5,7 @@ use crate::space::{
 use crate::images::{RawImage, Color, WHITE, BLACK};
 use crate::collision::{Collidable, Ray, Collision};
 use std::rc::Rc;
+use crate::material::Material;
 
 pub enum Camera {
     Ortho(OrthographicCamera)
@@ -56,15 +57,25 @@ impl Renderer for OrthographicCamera {
 
                 let ray = Ray::new(Point::new(x, y, 0.0) + self.location, Point::new(0.0, 0.0, 1.0));
 
-                let mut closest_collision: Option<Collision> = None;
+                // TODO: Optimization for when a triangle is not even in the frame.
+                let mut closest_collision: Option<(Collision, Material)> = None;
+                // Check collision with each object in the scene
                 for obj in &scene.objects {
+                    // Check collision with each triangle in the object
                     for tri in obj.triangles() {
+                        // Check collision with the triangle
                         match tri.intersection_point(&ray) {
                             None => {},
                             Some(cl) => match &closest_collision {
-                                None => closest_collision = Some(cl),
-                                Some(closest) => if cl.distance < closest.distance {
-                                    closest_collision = Some(cl)
+                                None => closest_collision = match tri.material() {
+                                    Some(mat) => Some((cl, mat.clone())),
+                                    None => Some((cl, obj.base_material().clone()))
+                                },
+                                Some((closest, _)) => if cl.distance < closest.distance {
+                                    closest_collision = match tri.material() {
+                                        Some(mat) => Some((cl, mat.clone())),
+                                        None => Some((cl, obj.base_material().clone()))
+                                    }
                                 }
                             }
                         };
@@ -72,7 +83,7 @@ impl Renderer for OrthographicCamera {
                 }
                 match closest_collision {
                     None => output_image.set_pixel(BLACK, j, i),
-                    Some(_) => output_image.set_pixel(WHITE, j, i)
+                    Some((_, mat)) => output_image.set_pixel(mat.color().clone(), j, i)
                 }
             }
         }

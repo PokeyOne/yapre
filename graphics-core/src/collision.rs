@@ -7,6 +7,8 @@
 mod tests;
 
 use crate::space::{Line, Point, Triangle};
+use crate::material::Material;
+use std::rc::Rc;
 
 pub type Ray = Line;
 

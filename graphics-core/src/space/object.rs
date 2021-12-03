@@ -51,4 +51,8 @@ impl Object {
     pub fn triangles(&self) -> Vec<Triangle> {
         self.mesh.transformed_mesh(&self.transform).triangles
     }
+
+    pub fn base_material(&self) -> &Material {
+        &self.mesh.base_material
+    }
 }

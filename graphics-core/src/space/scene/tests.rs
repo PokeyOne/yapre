@@ -4,6 +4,8 @@ use crate::space::transform::TransformStep;
 use crate::space::object::{Mesh, Object};
 use crate::camera::OrthographicCamera;
 use crate::camera::Renderer;
+use crate::images::Color;
+use crate::material::Material;
 
 fn test_diamond() -> Object {
     let mut triangles = Vec::new();
@@ -27,7 +29,9 @@ fn test_diamond() -> Object {
     ];
 
     for t in trip {
-        triangles.push(Triangle::new([points[t.0], points[t.1], points[t.2]]));
+        let mut triangle = Triangle::new([points[t.0], points[t.1], points[t.2]]);
+        triangle.set_material(Material::new(Color::random()));
+        triangles.push(triangle);
     }
 
     Object::new(Mesh::new(triangles))
