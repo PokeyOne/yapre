@@ -46,7 +46,7 @@ pub const CLEAR: Color = Color {
     a: 0,
 };
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub struct Color {
     pub r: u8,
     pub g: u8,

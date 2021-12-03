@@ -28,3 +28,15 @@ fn test_save_image() {
 
     assert!(Path::new(&path).exists());
 }
+
+#[test]
+fn test_color_from_rgba() {
+    let color = Color::from_rgba(0xFEFBFFFF);
+    assert_eq!(color, Color::new(0xFE, 0xFB, 0xFF, 0xFF));
+}
+
+#[test]
+fn test_color_to_rgba() {
+    let color = Color::new(0xFE, 0xFB, 0xFF, 0xFF);
+    assert_eq!(color.rgba(), 0xFEFBFFFF);
+}
