@@ -68,6 +68,15 @@ impl Color {
         (self.r as u32) << 24 | (self.g as u32) << 16 | (self.b as u32) << 8 | (self.a as u32)
     }
 
+    pub fn from_rgba(rgba: u32) -> Color {
+        Color {
+            r: ((rgba >> 24) & 0xFF) as u8,
+            g: ((rgba >> 16) & 0xFF) as u8,
+            b: ((rgba >> 8) & 0xFF) as u8,
+            a: (rgba & 0xFF) as u8
+        }
+    }
+
     pub fn random() -> Color {
         Color::new(
             rand::random::<u8>(),

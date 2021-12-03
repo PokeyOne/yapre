@@ -16,4 +16,8 @@ impl Material {
     pub fn color(&self) -> &Color {
         &self.color
     }
+
+    pub fn default() -> Material {
+        Material::new(Color::from_rgba(0xAAAAAAAAu32))
+    }
 }

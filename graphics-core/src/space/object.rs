@@ -2,15 +2,18 @@ use super::{
     Triangle,
     transform::Transform
 };
+use crate::material::Material;
 
 pub struct Mesh {
-    pub triangles: Vec<Triangle>
+    pub triangles: Vec<Triangle>,
+    base_material: Material
 }
 
 impl Mesh {
     pub fn new(triangles: Vec<Triangle>) -> Mesh {
         Mesh {
-            triangles: triangles
+            triangles: triangles,
+            base_material: Material::default()
         }
     }
 
@@ -20,7 +23,8 @@ impl Mesh {
             new_triangles.push(triangle.transformed_triangle(transform));
         }
         Mesh {
-            triangles: new_triangles
+            triangles: new_triangles,
+            base_material: self.base_material.clone()
         }
     }
 }
