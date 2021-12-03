@@ -71,7 +71,7 @@ fn test_generate_obj_from_file_with_one_triangle() {
 }
 
 #[test]
-fn load_complex_object_from_file() -> Result<(), String> {
+fn load_object_with_many_tris_from_file() -> Result<(), String> {
     let path = "./test-resources/test_object.obj";
     let object = load_object_from_file(path)?;
 
