@@ -13,15 +13,13 @@ use sdl2::rect::{Point, Rect};
 use std::time::Duration;
 
 use yapre_graphics_core::{
-    images::{RawImage, Color as YapreColor},
-    camera::{Renderer, OrthographicCamera},
+    camera::{OrthographicCamera, Renderer},
+    images::{Color as YapreColor, RawImage},
     space::{
-        Triangle,
-        Point as YaprePoint,
-        ORIGIN,
+        object::{Mesh, Object},
         scene::Scene,
-        object::{Object, Mesh}
-    },
+        Point as YaprePoint, Triangle, ORIGIN
+    }
 };
 
 // TODO: it would be nice to seperate out a bunch of UI type stuff to build

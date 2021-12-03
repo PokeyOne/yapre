@@ -8,9 +8,7 @@ pub struct Material {
 
 impl Material {
     pub fn new(color: Color) -> Material {
-        Material {
-            color
-        }
+        Material { color }
     }
 
     pub fn color(&self) -> &Color {

@@ -6,8 +6,8 @@
 #[cfg(test)]
 mod tests;
 
-use crate::space::{Line, Point, Triangle};
 use crate::material::Material;
+use crate::space::{Line, Point, Triangle};
 use std::rc::Rc;
 
 pub type Ray = Line;
@@ -19,10 +19,7 @@ pub struct Collision {
 
 impl Collision {
     pub fn new(point: Point, distance: f64) -> Self {
-        Self {
-            point,
-            distance
-        }
+        Self { point, distance }
     }
 }
 

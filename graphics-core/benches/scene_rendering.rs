@@ -3,15 +3,15 @@ extern crate test;
 
 use test::Bencher;
 use yapre_graphics_core::{
-    space::{
-        Point, ORIGIN, Triangle,
-        transform::TransformStep,
-        object::{Mesh, Object},
-        scene::Scene
-    },
-    camera::{Renderer, OrthographicCamera, Camera},
+    camera::{Camera, OrthographicCamera, Renderer},
     images::Color,
-    material::Material
+    material::Material,
+    space::{
+        object::{Mesh, Object},
+        scene::Scene,
+        transform::TransformStep,
+        Point, Triangle, ORIGIN
+    }
 };
 
 fn test_diamond() -> Object {
@@ -22,7 +22,7 @@ fn test_diamond() -> Object {
         Point::new(0.0, 1.0, 0.0),
         Point::new(0.0, -1.0, 0.0),
         Point::new(0.0, 0.0, 1.0),
-        Point::new(0.0, 0.0, -1.0)
+        Point::new(0.0, 0.0, -1.0),
     ];
     let trip = vec![
         (0, 2, 3),
@@ -32,7 +32,7 @@ fn test_diamond() -> Object {
         (1, 2, 3),
         (1, 3, 4),
         (1, 4, 5),
-        (1, 5, 2)
+        (1, 5, 2),
     ];
 
     for t in trip {
@@ -49,7 +49,8 @@ fn small_image_with_single_object(b: &mut Bencher) {
     let cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
     let mut scene = Scene::new(vec![Camera::Ortho(cam)], Vec::new(), Vec::new());
     let mut obj = test_diamond();
-    obj.transform.add_step(TransformStep::Translate(Point::new(0.0, 0.0, 5.0)));
+    obj.transform
+        .add_step(TransformStep::Translate(Point::new(0.0, 0.0, 5.0)));
     obj.squash_transforms();
     scene.add_object(obj);
 
@@ -61,7 +62,8 @@ fn megapixel_image_with_single_object(b: &mut Bencher) {
     let cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
     let mut scene = Scene::new(vec![Camera::Ortho(cam)], Vec::new(), Vec::new());
     let mut obj = test_diamond();
-    obj.transform.add_step(TransformStep::Translate(Point::new(0.0, 0.0, 5.0)));
+    obj.transform
+        .add_step(TransformStep::Translate(Point::new(0.0, 0.0, 5.0)));
     obj.squash_transforms();
     scene.add_object(obj);
 

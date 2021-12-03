@@ -2,12 +2,12 @@
 mod tests;
 
 use png::Encoder;
-use std::path::Path;
+use rand;
+use std::fmt::{Debug, Error as FormatterError, Formatter};
 use std::fs::File;
 use std::io::BufWriter;
-use std::fmt::{Formatter, Error as FormatterError, Debug};
+use std::path::Path;
 use uuid::Uuid;
-use rand;
 
 pub const WHITE: Color = Color {
     r: 255,
@@ -43,7 +43,7 @@ pub const CLEAR: Color = Color {
     r: 255,
     g: 255,
     b: 255,
-    a: 0,
+    a: 0
 };
 
 #[derive(Clone, PartialEq)]
@@ -100,9 +100,7 @@ pub struct Pixel {
 
 impl Pixel {
     pub fn new(color: Color) -> Pixel {
-        Pixel {
-            color: color
-        }
+        Pixel { color: color }
     }
 }
 
@@ -179,7 +177,9 @@ impl RawImage {
         let mut writer = encoder.write_header().map_err(|e| format!("{}", e))?;
 
         let data = self.get_image_data();
-        writer.write_image_data(&data).map_err(|e| format!("{}", e))?;
+        writer
+            .write_image_data(&data)
+            .map_err(|e| format!("{}", e))?;
 
         Ok(())
     }

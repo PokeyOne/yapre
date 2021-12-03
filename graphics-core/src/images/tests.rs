@@ -22,7 +22,7 @@ fn test_save_image() {
     std::fs::create_dir_all(path_prefix).unwrap();
 
     match image.save_image_to_path(&path) {
-        Ok(_) => {},
+        Ok(_) => {}
         Err(e) => panic!("err: {:?}", e)
     }
 

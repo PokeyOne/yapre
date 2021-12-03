@@ -14,5 +14,5 @@ pub trait Light {
 pub enum LightType {
     Point,
     Directional,
-    Spot,
+    Spot
 }

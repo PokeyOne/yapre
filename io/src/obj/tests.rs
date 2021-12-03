@@ -1,6 +1,6 @@
 use super::*;
-use yapre_graphics_core::space::*;
 use yapre_graphics_core::space::object::Mesh;
+use yapre_graphics_core::space::*;
 
 #[test]
 fn point_registry_test() {
@@ -12,7 +12,10 @@ fn point_registry_test() {
 
     // Add another point and the old point should still be there
     let other_point = registry.add_point(Point::new(1.0, 2.0, 3.0));
-    assert_eq!(registry.get_point(other_point), Some(Point::new(1.0, 2.0, 3.0)));
+    assert_eq!(
+        registry.get_point(other_point),
+        Some(Point::new(1.0, 2.0, 3.0))
+    );
     assert_eq!(registry.get_point(point), Some(ORIGIN));
 
     // Asking for a non-existent point should return None
@@ -28,7 +31,7 @@ fn test_generate_obj_file_for_one_triangle() {
     let t = Triangle::new([
         Point::new(0.0, 0.0, 0.0),
         Point::new(1.0, 0.0, 0.0),
-        Point::new(0.0, 1.0, 0.0),
+        Point::new(0.0, 1.0, 0.0)
     ]);
     let mesh = Mesh::new(vec![t]);
     let object = ObjectCore::new(mesh);

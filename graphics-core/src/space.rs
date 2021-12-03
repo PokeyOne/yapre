@@ -11,8 +11,8 @@ pub mod object;
 pub mod scene;
 pub mod transform;
 
-use transform::Transform;
 use crate::material::Material;
+use transform::Transform;
 
 use std::ops::{Add, Div, Mul, Sub};
 
@@ -43,8 +43,8 @@ pub struct Point {
 impl PartialEq for Point {
     fn eq(&self, other: &Self) -> bool {
         (self.x - other.x).abs() < 0.00001
-        && (self.y - other.y).abs() < 0.00001
-        && (self.z - other.z).abs() < 0.00001
+            && (self.y - other.y).abs() < 0.00001
+            && (self.z - other.z).abs() < 0.00001
     }
 }
 
@@ -291,7 +291,10 @@ impl Triangle {
         assert_ne!(points[0], points[2]);
         assert_ne!(points[1], points[2]);
 
-        Triangle { points, material: None as Option<Material> }
+        Triangle {
+            points,
+            material: None as Option<Material>
+        }
     }
 
     pub fn shift(&mut self, by: Point) {

@@ -1,4 +1,4 @@
-use super::{Vector, Point};
+use super::{Point, Vector};
 
 pub struct Transform {
     pub sequence: Vec<TransformStep>
@@ -7,7 +7,7 @@ pub struct Transform {
 pub enum TransformStep {
     Translate(Vector),
     Rotate(Vector, Vector), // origin and amount
-    Scale(Vector, Vector) // origin and amount
+    Scale(Vector, Vector)   // origin and amount
 }
 
 impl Transform {

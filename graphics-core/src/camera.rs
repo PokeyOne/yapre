@@ -1,11 +1,8 @@
-use crate::space::{
-    Point, Triangle, Vector,
-    scene::Scene
-};
-use crate::images::{RawImage, Color, WHITE, BLACK};
-use crate::collision::{Collidable, Ray, Collision};
-use std::rc::Rc;
+use crate::collision::{Collidable, Collision, Ray};
+use crate::images::{Color, RawImage, BLACK, WHITE};
 use crate::material::Material;
+use crate::space::{scene::Scene, Point, Triangle, Vector};
+use std::rc::Rc;
 
 pub enum Camera {
     Ortho(OrthographicCamera)
@@ -26,7 +23,11 @@ pub struct OrthographicCamera {
 
 impl OrthographicCamera {
     pub fn new(location: Point, width: f64, height: f64) -> Self {
-        OrthographicCamera { location, width, height }
+        OrthographicCamera {
+            location,
+            width,
+            height
+        }
     }
 
     pub fn new_default() -> Self {
@@ -55,7 +56,10 @@ impl Renderer for OrthographicCamera {
             for i in 0..(image_size.0) {
                 let x: f64 = (((i as f64) / (image_size.0 as f64)) - 0.5) * self.width;
 
-                let ray = Ray::new(Point::new(x, y, 0.0) + self.location, Point::new(0.0, 0.0, 1.0));
+                let ray = Ray::new(
+                    Point::new(x, y, 0.0) + self.location,
+                    Point::new(0.0, 0.0, 1.0)
+                );
 
                 // TODO: Optimization for when a triangle is not even in the frame.
                 let mut closest_collision: Option<(Collision, Material)> = None;
@@ -65,16 +69,20 @@ impl Renderer for OrthographicCamera {
                     for tri in obj.triangles() {
                         // Check collision with the triangle
                         match tri.intersection_point(&ray) {
-                            None => {},
+                            None => {}
                             Some(cl) => match &closest_collision {
-                                None => closest_collision = match tri.material() {
-                                    Some(mat) => Some((cl, mat.clone())),
-                                    None => Some((cl, obj.base_material().clone()))
-                                },
-                                Some((closest, _)) => if cl.distance < closest.distance {
+                                None => {
                                     closest_collision = match tri.material() {
                                         Some(mat) => Some((cl, mat.clone())),
                                         None => Some((cl, obj.base_material().clone()))
+                                    }
+                                }
+                                Some((closest, _)) => {
+                                    if cl.distance < closest.distance {
+                                        closest_collision = match tri.material() {
+                                            Some(mat) => Some((cl, mat.clone())),
+                                            None => Some((cl, obj.base_material().clone()))
+                                        }
                                     }
                                 }
                             }

@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests;
 
+use obj;
+use obj::{Group, Obj, ObjData, ObjError, SimplePolygon};
 use std::io::Write;
 use std::path::Path;
-use obj;
-use obj::{Obj, ObjData, ObjError, Group, SimplePolygon};
 use yapre_graphics_core::space::object::Object as ObjectCore;
 use yapre_graphics_core::space::Point;
 
@@ -32,9 +32,7 @@ struct PointRegistry {
 
 impl PointRegistry {
     fn new() -> PointRegistry {
-        PointRegistry {
-            points: Vec::new()
-        }
+        PointRegistry { points: Vec::new() }
     }
 
     /// Returns the index of the point in the registry, or adds it if it doesn't
@@ -79,7 +77,12 @@ pub fn generate_obj_file(object: &ObjectCore) -> String {
         output_file_contents.push_str(&format!("v {:.6} {:.6} {:.6}\n", point.x, point.y, point.z));
     }
     for triangle in &triangle_data {
-        output_file_contents.push_str(&format!("f {:.6} {:.6} {:.6}\n", triangle[0] + 1, triangle[1] + 1, triangle[2] + 1));
+        output_file_contents.push_str(&format!(
+            "f {:.6} {:.6} {:.6}\n",
+            triangle[0] + 1,
+            triangle[1] + 1,
+            triangle[2] + 1
+        ));
     }
 
     output_file_contents
@@ -87,6 +90,8 @@ pub fn generate_obj_file(object: &ObjectCore) -> String {
 
 pub fn save_obj_file(path: &str, object: &ObjectCore) -> Result<(), String> {
     let mut output_file = std::fs::File::create(path).map_err(|e| e.to_string())?;
-    output_file.write_all(generate_obj_file(object).as_bytes()).map_err(|e| e.to_string())?;
+    output_file
+        .write_all(generate_obj_file(object).as_bytes())
+        .map_err(|e| e.to_string())?;
     Ok(())
 }

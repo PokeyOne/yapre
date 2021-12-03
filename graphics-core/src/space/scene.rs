@@ -3,21 +3,22 @@ mod tests;
 
 use crate::{
     camera::Camera,
-    space::{
-        lighting::Light,
-        object::Object
-    }
+    space::{lighting::Light, object::Object}
 };
 
 pub struct Scene {
     pub primary_camera: Camera,
     pub cameras: Vec<Camera>,
     pub objects: Vec<Object>,
-    pub lights: Vec<Box<dyn Light>>,
+    pub lights: Vec<Box<dyn Light>>
 }
 
 impl Scene {
-    pub fn new(mut cameras: Vec<Camera>, objects: Vec<Object>, lights: Vec<Box<dyn Light>>) -> Self {
+    pub fn new(
+        mut cameras: Vec<Camera>,
+        objects: Vec<Object>,
+        lights: Vec<Box<dyn Light>>
+    ) -> Self {
         if cameras.len() == 0 {
             cameras.push(Camera::new_default());
         }
@@ -26,7 +27,7 @@ impl Scene {
             primary_camera: cameras.remove(0),
             cameras,
             objects,
-            lights,
+            lights
         }
     }
 

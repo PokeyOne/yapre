@@ -1,7 +1,4 @@
-use super::{
-    Triangle,
-    transform::Transform
-};
+use super::{transform::Transform, Triangle};
 use crate::material::Material;
 
 pub struct Mesh {
