@@ -82,9 +82,6 @@ pub fn generate_obj_file(object: &ObjectCore) -> String {
         output_file_contents.push_str(&format!("f {:.6} {:.6} {:.6}\n", triangle[0] + 1, triangle[1] + 1, triangle[2] + 1));
     }
 
-    // let mut output_file = std::fs::File::create(path)?;
-    // output_file.write_all(output_file_contents.as_bytes())?;
-
     output_file_contents
 }
 
