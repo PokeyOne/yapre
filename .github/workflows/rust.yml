@@ -20,7 +20,7 @@ jobs:
       run: |
         # sudo apt-get install aptitude
         # sudo aptitude install libsdl2-dev
-        sudo apt-get install libsdl2-dev libsdl2-2.0-0 -y
+        sudo apt install libsdl2-dev libsdl2-2.0-0 -y
     - name: Build
       run: cargo build --verbose
     - name: Run tests
