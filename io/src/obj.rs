@@ -1,12 +1,27 @@
 #[cfg(test)]
 mod tests;
 
-use std::io::Write;
+use std::fs::File;
+use std::io::{Read, Write};
 use std::path::Path;
 use yapre_graphics_core::space::object::{Mesh, Object};
 use yapre_graphics_core::space::{Point, Triangle};
 
-// TODO: load_obj_from_file
+pub fn load_object_from_file(path: &str) -> Result<Object, String> {
+    let path = Path::new(path);
+    let mut file = match File::open(path) {
+        Ok(file) => file,
+        Err(e) => return Err(format!("{}", e)),
+    };
+
+    let mut contents = String::new();
+    match file.read_to_string(&mut contents) {
+        Ok(contents) => contents,
+        Err(e) => return Err(format!("{}", e)),
+    };
+
+    load_object_from_contents(contents)
+}
 
 macro_rules! unwrap_parse_type_or_return {
     ($expr:expr, $ty:ty) => {
