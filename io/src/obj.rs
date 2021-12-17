@@ -10,16 +10,19 @@ use yapre_graphics_core::space::{Point, Triangle};
 pub fn load_object_from_file(path: &str) -> Result<Object, String> {
     let path = Path::new(path);
     println!("Working directory: {:?}", Path::new(".").canonicalize());
-    println!("Loading object from file: {}", path.canonicalize().unwrap().display());
+    println!(
+        "Loading object from file: {}",
+        path.canonicalize().unwrap().display()
+    );
     let mut file = match File::open(path) {
         Ok(file) => file,
-        Err(e) => return Err(format!("opening file: {}", e)),
+        Err(e) => return Err(format!("opening file: {}", e))
     };
 
     let mut contents = String::new();
     match file.read_to_string(&mut contents) {
         Ok(contents) => contents,
-        Err(e) => return Err(format!("reading file: {}", e)),
+        Err(e) => return Err(format!("reading file: {}", e))
     };
 
     load_object_from_contents(contents)
@@ -30,9 +33,20 @@ macro_rules! unwrap_parse_type_or_return {
         match $expr {
             Some(val) => match val.parse::<$ty>() {
                 Ok(val) => val,
-                Err(_) => return Err(format!("could not parse {} from {}", std::any::type_name::<$ty>(), val)),
+                Err(_) => {
+                    return Err(format!(
+                        "could not parse {} from {}",
+                        std::any::type_name::<$ty>(),
+                        val
+                    ))
+                }
             },
-            None => return Err(format!("could not get next token to parse {}", std::any::type_name::<$ty>())),
+            None => {
+                return Err(format!(
+                    "could not get next token to parse {}",
+                    std::any::type_name::<$ty>()
+                ))
+            }
         }
     };
 }
@@ -46,7 +60,7 @@ pub fn load_object_from_contents(contents: String) -> Result<Object, String> {
         let mut line_iter = line.split_whitespace();
         let line_type = match line_iter.next() {
             Some(line_type) => line_type,
-            None => continue, // blank line
+            None => continue // blank line
         };
 
         match line_type {

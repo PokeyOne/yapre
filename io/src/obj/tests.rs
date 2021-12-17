@@ -60,14 +60,8 @@ fn test_generate_obj_from_file_with_one_triangle() {
     let object = object.expect("Failed to load object from input specification");
     assert_eq!(object.triangles().len(), 1);
     assert_eq!(object.triangles()[0].points[0], ORIGIN);
-    assert_eq!(
-        object.triangles()[0].points[1],
-        Point::new(1.0, 0.0, 0.0)
-    );
-    assert_eq!(
-        object.triangles()[0].points[2],
-        Point::new(0.0, 1.0, 0.0)
-    );
+    assert_eq!(object.triangles()[0].points[1], Point::new(1.0, 0.0, 0.0));
+    assert_eq!(object.triangles()[0].points[2], Point::new(0.0, 1.0, 0.0));
 }
 
 #[test]
