@@ -1,8 +1,8 @@
 use crate::collision::{Collidable, Collision, Ray};
-use crate::images::{Color, RawImage, BLACK, WHITE};
+use crate::images::{RawImage, BLACK};
 use crate::material::Material;
-use crate::space::{scene::Scene, Point, Triangle, Vector};
-use std::rc::Rc;
+use crate::space::{scene::Scene, Point};
+
 
 pub enum Camera {
     Ortho(OrthographicCamera)

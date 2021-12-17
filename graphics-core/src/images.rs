@@ -57,10 +57,10 @@ pub struct Color {
 impl Color {
     pub fn new(r: u8, g: u8, b: u8, a: u8) -> Color {
         Color {
-            r: r,
-            g: g,
-            b: b,
-            a: a
+            r,
+            g,
+            b,
+            a
         }
     }
 
@@ -100,7 +100,7 @@ pub struct Pixel {
 
 impl Pixel {
     pub fn new(color: Color) -> Pixel {
-        Pixel { color: color }
+        Pixel { color }
     }
 }
 
@@ -169,7 +169,7 @@ impl RawImage {
     pub fn save_image_to_path(&self, path: &str) -> Result<(), String> {
         let path = Path::new(path);
         let file = File::create(path).map_err(|e| format!("{}", e))?;
-        let ref mut w = BufWriter::new(file);
+        let w = &mut BufWriter::new(file);
 
         let mut encoder = Encoder::new(w, self.get_width() as u32, self.get_height() as u32);
         encoder.set_color(png::ColorType::Rgba);

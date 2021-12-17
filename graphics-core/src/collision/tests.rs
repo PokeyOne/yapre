@@ -74,7 +74,7 @@ fn test_array_of_rays() {
 
             print!("{}", c);
         }
-        print!("\n");
+        println!();
     }
 
     // Uncomment this line to print out the generated triangle

@@ -6,9 +6,9 @@
 #[cfg(test)]
 mod tests;
 
-use crate::material::Material;
+
 use crate::space::{Line, Point, Triangle};
-use std::rc::Rc;
+
 
 pub type Ray = Line;
 
@@ -43,7 +43,7 @@ impl Collidable for Triangle {
         let inv_det = 1.0 / det;
         let t = ray.location() - self.points[0];
         let u = t.dot(&p) * inv_det;
-        if u < 0.0 || u > 1.0 {
+        if !(0.0..=1.0).contains(&u) {
             return None;
         }
         let q = t.cross(&e1);

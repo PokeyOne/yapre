@@ -22,7 +22,7 @@ impl Transform {
     }
 
     pub fn apply(&self, point: &Point) -> Point {
-        let mut result: Point = point.clone();
+        let mut result: Point = *point;
 
         for step in &self.sequence {
             result = step.apply(&result);

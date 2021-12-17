@@ -8,13 +8,12 @@ mod licensing;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseButton;
-use sdl2::pixels::{Color, PixelFormatEnum};
+use sdl2::pixels::{Color};
 use sdl2::rect::{Point, Rect};
 use std::time::Duration;
 
 use yapre_graphics_core::{
     camera::{OrthographicCamera, Renderer},
-    images::{Color as YapreColor, RawImage},
     space::{
         object::{Mesh, Object},
         scene::Scene,
@@ -79,7 +78,7 @@ fn main() -> Result<(), String> {
         YaprePoint::new(-1.0, -1.0, 1.0)
     ]);
     // TODO: create the object and scene
-    let mut cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
+    let cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
     let mut animation_frame: i32 = 0;
     let animation_frame_max: i32 = 25;
     let animation_frame_min: i32 = -25;

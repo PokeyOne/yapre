@@ -9,7 +9,7 @@ pub struct Mesh {
 impl Mesh {
     pub fn new(triangles: Vec<Triangle>) -> Mesh {
         Mesh {
-            triangles: triangles,
+            triangles,
             base_material: Material::default()
         }
     }

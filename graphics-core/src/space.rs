@@ -105,7 +105,7 @@ impl Point {
     }
 
     pub fn length(&self) -> f64 {
-        self.dot(&self).sqrt()
+        self.dot(self).sqrt()
     }
 
     /// Calculates a vector in the same direction as self, but with a magnitude
@@ -129,7 +129,7 @@ impl Point {
         // For the zero vector we return the zero vector. This is not 100%
         // mathematically accuration, but for our applications is appropriate.
         if *self == ORIGIN {
-            return self.clone();
+            return *self;
         }
 
         let l = self.length();
@@ -373,7 +373,7 @@ impl PartialEq for Triangle {
             }
         }
 
-        return true;
+        true
     }
 }
 

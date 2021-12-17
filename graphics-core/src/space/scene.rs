@@ -19,7 +19,7 @@ impl Scene {
         objects: Vec<Object>,
         lights: Vec<Box<dyn Light>>
     ) -> Self {
-        if cameras.len() == 0 {
+        if cameras.is_empty() {
             cameras.push(Camera::new_default());
         }
 
