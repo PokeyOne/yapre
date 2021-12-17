@@ -121,7 +121,7 @@ impl PointRegistry {
     }
 
     fn get_point(&self, index: usize) -> Option<Point> {
-        if index < 0 || index >= self.points.len() {
+        if index >= self.points.len() {
             return None;
         }
 
