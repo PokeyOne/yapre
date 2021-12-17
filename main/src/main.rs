@@ -137,9 +137,8 @@ fn main() -> Result<(), String> {
             0.0
         ));
         animation_frame += animation_direction;
-        if animation_frame >= animation_frame_max && animation_direction > 0 {
-            animation_direction = -animation_direction;
-        } else if animation_frame <= animation_frame_min && animation_direction < 0 {
+        if (animation_frame >= animation_frame_max && animation_direction > 0)
+            || (animation_frame <= animation_frame_min && animation_direction < 0) {
             animation_direction = -animation_direction;
         }
 
