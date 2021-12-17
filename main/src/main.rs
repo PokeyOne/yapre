@@ -137,8 +137,11 @@ fn main() -> Result<(), String> {
             0.0
         ));
         animation_frame += animation_direction;
+        // I'm not a huge fan of the brace on the next line, but it's alright.
+        // also this file is a hot temporary mess anyway.
         if (animation_frame >= animation_frame_max && animation_direction > 0)
-            || (animation_frame <= animation_frame_min && animation_direction < 0) {
+            || (animation_frame <= animation_frame_min && animation_direction < 0)
+        {
             animation_direction = -animation_direction;
         }
 
