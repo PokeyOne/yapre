@@ -23,7 +23,6 @@ fn test_point_add() {
     let a_b_expected = Point::new(3.0, 3.0, 3.0);
 
     assert_eq!(a, a + ORIGIN);
-    assert_eq!(a, a + ORIGIN);
     assert_eq!(a_b_expected, a + b);
 }
 
@@ -34,7 +33,6 @@ fn test_point_sub() {
     let a_b_expected = Point::new(-1.0, 1.0, 3.0);
     let b_a_expected = Point::new(1.0, -1.0, -3.0);
 
-    assert_eq!(a, a - ORIGIN);
     assert_eq!(a, a - ORIGIN);
     assert_eq!(a_b_expected, a - b);
     assert_eq!(b_a_expected, b - a);
@@ -179,5 +177,5 @@ fn test_triangle_equality_not_equal() {
 #[test]
 #[should_panic]
 fn triangle_with_duplicate_points_should_panic() {
-    let _a = Triangle::new([ORIGIN, ORIGIN, Point::new(1.0, 0.0, 0.0)]);
+    Triangle::new([ORIGIN, ORIGIN, Point::new(1.0, 0.0, 0.0)]);
 }
