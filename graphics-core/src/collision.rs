@@ -41,7 +41,8 @@ impl Collidable for Triangle {
         let inv_det = 1.0 / det;
         let t = ray.location() - self.points[0];
         let u = t.dot(&p) * inv_det;
-        if !(0.0..=1.0).contains(&u) {
+        #[allow(clippy::manual_range_contains)]
+        if u < 0.0 || u > 1.0 {
             return None;
         }
         let q = t.cross(&e1);
