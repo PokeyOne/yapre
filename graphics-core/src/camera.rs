@@ -3,7 +3,6 @@ use crate::images::{RawImage, BLACK};
 use crate::material::Material;
 use crate::space::{scene::Scene, Point};
 
-
 pub enum Camera {
     Ortho(OrthographicCamera)
 }

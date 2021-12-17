@@ -56,12 +56,7 @@ pub struct Color {
 
 impl Color {
     pub fn new(r: u8, g: u8, b: u8, a: u8) -> Color {
-        Color {
-            r,
-            g,
-            b,
-            a
-        }
+        Color { r, g, b, a }
     }
 
     pub fn rgba(&self) -> u32 {
