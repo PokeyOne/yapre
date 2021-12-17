@@ -46,7 +46,7 @@ pub fn load_object_from_contents(contents: String) -> Result<Object, String> {
         let mut line_iter = line.split_whitespace();
         let line_type = match line_iter.next() {
             Some(line_type) => line_type,
-            None => continue,
+            None => continue, // blank line
         };
 
         match line_type {
