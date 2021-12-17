@@ -256,7 +256,6 @@ version = "0.1.0"
 dependencies = [
  "png",
  "rand",
- "sdl2",
  "uuid",
 ]
 
