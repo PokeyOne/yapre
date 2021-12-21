@@ -28,6 +28,7 @@ pub const ORIGIN: Point = Point {
 /// a vector than a point.
 pub type Vector = Point;
 
+// TODO: Keyframe animation
 /// The most basic unit of free space, respresenting a single location using
 /// the x, y, and z axes.
 #[derive(Debug, Copy, Clone)]
