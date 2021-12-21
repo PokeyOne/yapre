@@ -1,7 +1,61 @@
+use std::cmp::Ordering;
+
+/// A simple value mapped to a frame/time in the scene. The time stored is an
+/// integer because it should be mapped to a frame number. Frame numbers can
+/// be negative.
+#[derive(Clone, Debug, Copy)]
+pub struct KeyFrame {
+    /// The frame number that this node on the timeline.
+    pub time: i64,
+    /// The value at said KeyFrame
+    pub value: f64
+}
+
+impl KeyFrame {
+    /// Construct a new key frame at the specified time and place.
+    pub fn new(time: i64, value: f64) -> Self {
+        Self { time, value }
+    }
+
+    /// Gets the time as a float. This is common in the calculation of values
+    /// at certain times.
+    ///
+    /// # Examples
+    /// ```
+    /// # use yapre_graphics_core::animation::KeyFrame;
+    /// let key_frame = KeyFrame::new(45, 1.0);
+    /// assert_eq!(key_frame.timef(), 45.0f64);
+    /// ```
+    //noinspection SpellCheckingInspection
+    pub fn timef(&self) -> f64 {
+        self.time as f64
+    }
+}
+
+impl Eq for KeyFrame {}
+
+impl PartialEq<Self> for KeyFrame {
+    fn eq(&self, other: &Self) -> bool {
+        self.time == other.time
+    }
+}
+
+impl PartialOrd<Self> for KeyFrame {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for KeyFrame {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.time.cmp(&other.time)
+    }
+}
+
 /// A value that is animated by keyframes.
 pub struct AnimatedValue {
     /// Essentially a map of time to value.
-    frames: Vec<(f64, f64)>,
+    frames: Vec<KeyFrame>,
     /// Equation that determines the intermediate value between to frames.
     /// The input is the percentage between the two frames, and is always
     /// between 0 and 1. The output should be also be between 0 and 1, and is
@@ -36,16 +90,13 @@ impl AnimatedValue {
     /// Just a constant value that will not change with time.
     pub fn constant(value: f64) -> AnimatedValue {
         AnimatedValue {
-            frames: vec![(0.0, value)],
+            frames: vec![KeyFrame::new(0, value)],
             equation: linear_animation_equation
         }
     }
 
-    /// Linearly animated value. Frames should be sorted by time. The first
-    /// number in each frame is the time, and the second number is the value.
-    /// The number of frames should be at least 1, but if there are zero, this
-    /// method will not complain. The result will be a constant of zero.
-    pub fn linear(mut frames: Vec<(f64, f64)>) -> AnimatedValue {
+    /// Linearly animated value. Frames should be sorted by time.
+    pub fn linear(mut frames: Vec<KeyFrame>) -> AnimatedValue {
         frames.sort_unstable();
         AnimatedValue {
             frames,
@@ -54,11 +105,8 @@ impl AnimatedValue {
     }
 
     /// An animated value that is eased in and out. Frames should be sorted by
-    /// time. The first number in each frame is the time, and the second
-    /// number is the value. The number of frames should be at least 1, but if
-    /// there are zero, this method will not complain. The result will be a
-    /// constant of zero.
-    pub fn ease_in_out(mut frames: Vec<(f64, f64)>) -> AnimatedValue {
+    /// time.
+    pub fn ease_in_out(mut frames: Vec<KeyFrame>) -> AnimatedValue {
         frames.sort_unstable();
         AnimatedValue {
             frames,
@@ -66,8 +114,8 @@ impl AnimatedValue {
         }
     }
 
-    pub fn insert_frame(&mut self, time: f64, value: f64) {
-        self.frames.push((time, value));
+    pub fn insert_frame(&mut self, time: i64, value: f64) {
+        self.frames.push(KeyFrame::new(time, value));
         self.frames.sort_unstable();
     }
 
@@ -78,19 +126,14 @@ impl AnimatedValue {
             return 0.0;
         }
 
-        // Check for only having one frame.
-        if self.frames.len() == 1 {
-            return self.frames[0].1;
-        }
-
-        // Check for being before the first frame.
-        if time < self.frames[0].0 {
-            return self.frames[0].1;
+        // Check for only having one frame or time is before the first frame.
+        if self.frames.len() == 1 || time < self.frames[0].timef() {
+            return self.frames[0].value;
         }
 
         // Check for being after the last frame.
-        if time > self.frames[self.frames.len() - 1].0 {
-            return self.frames[self.frames.len() - 1].1;
+        if time > self.frames[self.frames.len() - 1].timef() {
+            return self.frames[self.frames.len() - 1].value;
         }
 
         // Find the two frames that are before and after the time.
@@ -98,10 +141,10 @@ impl AnimatedValue {
         let before = &self.frames[before];
         let after = &self.frames[after];
 
-        let frame_time_difference = after.0 - before.0;
-        let time_since_before = time - before.0;
+        let frame_time_difference = (after.time - before.time) as f64;
+        let time_since_before = time - before.time as f64;
 
-        self.equation(time_since_before / frame_time_difference)
+        (self.equation)(time_since_before / frame_time_difference)
     }
 
     /// Finds the indices of the two frames that are before and after the time.
@@ -110,7 +153,7 @@ impl AnimatedValue {
         //       should be binary search.
         let mut index = 0;
         for i in 0..self.frames.len() {
-            if self.frames[i].0 > time {
+            if self.frames[i].timef() > time {
                 index = i;
                 break;
             }
