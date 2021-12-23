@@ -9,7 +9,6 @@ fn test_generate_random_temp_path() {
 }
 
 #[test]
-#[ignore="Creates a file that it doesn't delete, so only run when needed"]
 fn test_save_image() {
     let mut image = RawImage::new(256, 256);
     for x in 0..256 {
@@ -23,11 +22,12 @@ fn test_save_image() {
     std::fs::create_dir_all(path_prefix).unwrap();
 
     match image.save_image_to_path(&path) {
-        Ok(_) => {}
+        Ok(_) => {
+            assert!(Path::new(&path).exists());
+            std::fs::remove_file(&path).unwrap();
+        },
         Err(e) => panic!("err: {:?}", e)
     }
-
-    assert!(Path::new(&path).exists());
 }
 
 #[test]

@@ -1,3 +1,4 @@
+use std::path::Path;
 use super::*;
 use crate::camera::OrthographicCamera;
 use crate::camera::Renderer;
@@ -38,7 +39,6 @@ fn test_diamond() -> Object {
 }
 
 #[test]
-#[ignore="Creates a file that it doesn't delete, so only run when needed"]
 fn test_scene_diamond_render() {
     let cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
     let mut scene = Scene::new(vec![Camera::Ortho(cam)], Vec::new(), Vec::new());
@@ -49,5 +49,13 @@ fn test_scene_diamond_render() {
     scene.add_object(obj);
 
     let img = scene.get_primary_camera().render(&scene, (100, 100));
-    img.save_to_temp_path().unwrap();
+    match img.save_to_temp_path() {
+        Ok(p) => {
+            println!("Saved to {}", p);
+            let path = Path::new(&p);
+            assert!(path.exists());
+            std::fs::remove_file(path).unwrap();
+        }
+        Err(e) => panic!("{}", e),
+    };
 }
