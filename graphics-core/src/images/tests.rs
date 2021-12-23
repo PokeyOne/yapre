@@ -9,6 +9,7 @@ fn test_generate_random_temp_path() {
 }
 
 #[test]
+#[ignore="Creates a file that it doesn't delete, so only run when needed"]
 fn test_save_image() {
     let mut image = RawImage::new(256, 256);
     for x in 0..256 {

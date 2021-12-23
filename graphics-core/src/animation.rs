@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use std::cmp::Ordering;
 
 /// A simple value mapped to a frame/time in the scene. The time stored is an
@@ -53,6 +56,7 @@ impl Ord for KeyFrame {
 }
 
 /// A value that is animated by keyframes.
+#[derive(Clone, Debug)]
 pub struct AnimatedValue {
     /// Essentially a map of time to value.
     frames: Vec<KeyFrame>,
@@ -137,7 +141,16 @@ impl AnimatedValue {
         }
 
         // Find the two frames that are before and after the time.
-        let (before, after) = self.find_frames_before_and_after(time);
+        let (before, after) = match self.find_frames_before_and_after(time) {
+            Some(frames) => frames,
+            // None is unreachable because we already checked for zero frames.
+            None => unreachable!()
+        };
+        if before == after {
+            // If the two frames are the same, return the value of the frame.
+            return self.frames[before].value;
+        }
+
         let before = &self.frames[before];
         let after = &self.frames[after];
 
@@ -148,7 +161,28 @@ impl AnimatedValue {
     }
 
     /// Finds the indices of the two frames that are before and after the time.
-    fn find_frames_before_and_after(&self, time: f64) -> (usize, usize) {
+    ///
+    /// If there are not frames, this will return None, otherwise it will be
+    /// Some value. If time is before all the frames, or there is only one
+    /// frame, the result will be (0, 0). If the time is after the last frame,
+    /// the result will be (len - 1, len - 1). If there are two or more frames
+    /// and the time is between two frames, the result will be Some tuple with
+    /// the index of the frame before and the frame after the time value.
+    ///
+    /// If the time value is exactly the same as a frame, the result will be
+    /// Some tuple with the index of the frame that it is equal to.
+    fn find_frames_before_and_after(&self, time: f64) -> Option<(usize, usize)> {
+        if self.frames.len() == 0 {
+            return None;
+        } else if self.frames.len() == 1 {
+            return Some((0, 0));
+        } else if time <= self.frames[0].timef() {
+            return Some((0, 0));
+        } else if time >= self.frames[self.frames.len() - 1].timef() {
+            let li = self.frames.len() - 1;
+            return Some((li, li));
+        }
+
         // TODO: This is iterative, but it's probably not the most efficient
         //       should be binary search.
         let mut index = 0;
@@ -156,8 +190,13 @@ impl AnimatedValue {
             if self.frames[i].timef() > time {
                 index = i;
                 break;
+            } else if self.frames[i].time == time as i64 {
+                return Some((i, i));
             }
         }
-        (index - 1, index)
+        println!("{}", index);
+        println!("{:?}", self);
+        println!("input time: {}", time);
+        Some((index - 1, index))
     }
 }

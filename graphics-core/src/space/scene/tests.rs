@@ -38,6 +38,7 @@ fn test_diamond() -> Object {
 }
 
 #[test]
+#[ignore="Creates a file that it doesn't delete, so only run when needed"]
 fn test_scene_diamond_render() {
     let cam = OrthographicCamera::new(ORIGIN, 3.0, 3.0);
     let mut scene = Scene::new(vec![Camera::Ortho(cam)], Vec::new(), Vec::new());
