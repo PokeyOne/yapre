@@ -12,6 +12,7 @@ pub mod scene;
 pub mod transform;
 
 use crate::material::Material;
+use crate::animation::AnimatedValue;
 use transform::Transform;
 
 use std::ops::{Add, Div, Mul, Sub};
@@ -28,7 +29,6 @@ pub const ORIGIN: Point = Point {
 /// a vector than a point.
 pub type Vector = Point;
 
-// TODO: Keyframe animation
 /// The most basic unit of free space, respresenting a single location using
 /// the x, y, and z axes.
 #[derive(Debug, Copy, Clone)]
@@ -41,18 +41,18 @@ pub struct Point {
     pub z: f64
 }
 
+#[derive(Debug, Clone)]
+pub struct Triangle {
+    pub points: [Point; 3],
+    material: Option<Material>
+}
+
 impl PartialEq for Point {
     fn eq(&self, other: &Self) -> bool {
         (self.x - other.x).abs() < 0.00001
             && (self.y - other.y).abs() < 0.00001
             && (self.z - other.z).abs() < 0.00001
     }
-}
-
-#[derive(Debug, Clone)]
-pub struct Triangle {
-    pub points: [Point; 3],
-    material: Option<Material>
 }
 
 impl Point {
