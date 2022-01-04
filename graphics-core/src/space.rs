@@ -56,8 +56,12 @@ impl PartialEq for Point {
 }
 
 impl Point {
-    pub fn new(x: f64, y: f64, z: f64) -> Self {
-        Point { x, y, z }
+    pub fn new<X: Into<f64>, Y: Into<f64>, Z: Into<f64>>(x: X, y: Y, z: Z) -> Self {
+        Point {
+            x: x.into(),
+            y: y.into(),
+            z: z.into()
+        }
     }
 
     /// Computes the result of scalar multiplication of this Point.

@@ -199,4 +199,10 @@ impl AnimatedValue {
         println!("input time: {}", time);
         Some((index - 1, index))
     }
+
+    /// Detects if this "animated value" only has one or zero frames. This
+    /// intentionally does not detect for more than one frame of the same value.
+    fn is_constant(&self) -> bool {
+        self.frames.len() <= 1
+    }
 }

@@ -139,3 +139,37 @@ fn find_frames_ba_when_several_frames() {
         assert_eq!(expected_output, output.expect("should have found a frame"));
     }
 }
+
+#[test]
+fn test_is_constant_function() {
+    let no_keyframes = AnimatedValue {
+        frames: vec![],
+        equation: linear_animation_equation
+    };
+    let one_keyframe = AnimatedValue {
+        frames: vec![
+            KeyFrame::new(5, 5.0)
+        ],
+        equation: linear_animation_equation
+    };
+    let two_keyframes_different_value = AnimatedValue {
+        frames: vec![
+            KeyFrame::new(0, 1.0),
+            KeyFrame::new(24, 40.0)
+        ],
+        equation: linear_animation_equation
+    };
+    // Should still not be considered a constant
+    let two_keyframes_same_value = AnimatedValue {
+        frames: vec![
+            KeyFrame::new(0, 1.0),
+            KeyFrame::new(24, 1.0)
+        ],
+        equation: linear_animation_equation
+    };
+
+    assert!(no_keyframes.is_constant());
+    assert!(one_keyframe.is_constant());
+    assert!(!two_keyframes_different_value.is_constant());
+    assert!(!two_keyframes_same_value.is_constant());
+}
