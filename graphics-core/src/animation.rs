@@ -178,9 +178,7 @@ impl AnimatedValue {
     fn find_frames_before_and_after(&self, time: f64) -> Option<(usize, usize)> {
         if self.frames.is_empty() {
             return None;
-        } else if self.frames.len() == 1 {
-            return Some((0, 0));
-        } else if time <= self.frames[0].timef() {
+        } else if self.frames.len() == 1 || time <= self.frames[0].timef() {
             return Some((0, 0));
         } else if time >= self.frames[self.frames.len() - 1].timef() {
             let li = self.frames.len() - 1;
