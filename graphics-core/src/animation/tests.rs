@@ -5,7 +5,7 @@ use std::f64::consts::PI;
 fn key_frame_timef_should_be_straight_conversion() {
     let key_frame = KeyFrame::new(5, 30.5);
 
-    assert_eq!(key_frame.timef(), 5 as f64);
+    assert_eq!(key_frame.timef(), 5_f64);
 }
 
 #[test]

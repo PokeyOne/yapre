@@ -14,7 +14,7 @@ fn test_from_point() {
 #[test]
 fn get_value_of_constant() {
     let input_point = Point::new(1, 2, 3);
-    let c = AnimatedPoint::from_point(input_point.clone());
+    let c = AnimatedPoint::from_point(input_point);
     assert_eq!(c.get_value(0), input_point);
     assert_eq!(c.get_value(1), input_point);
 }

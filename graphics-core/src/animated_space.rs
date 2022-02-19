@@ -2,7 +2,7 @@
 pub mod tests;
 
 use crate::animation::AnimatedValue;
-use crate::space::{Line, Point, Triangle};
+use crate::space::Point;
 
 /// An alias for `AnimatedPoint` because it can be more semantically correct
 /// to refer to something as a vector rather than a point.

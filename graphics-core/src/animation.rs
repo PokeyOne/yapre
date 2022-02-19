@@ -130,7 +130,7 @@ impl AnimatedValue {
     /// Returns the value at the given time.
     pub fn get_value(&self, time: f64) -> f64 {
         // Check for not having any frames.
-        if self.frames.len() == 0 {
+        if self.frames.is_empty() {
             return 0.0;
         }
 
@@ -176,7 +176,7 @@ impl AnimatedValue {
     /// If the time value is exactly the same as a frame, the result will be
     /// Some tuple with the index of the frame that it is equal to.
     fn find_frames_before_and_after(&self, time: f64) -> Option<(usize, usize)> {
-        if self.frames.len() == 0 {
+        if self.frames.is_empty() {
             return None;
         } else if self.frames.len() == 1 {
             return Some((0, 0));
