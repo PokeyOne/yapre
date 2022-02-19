@@ -1,4 +1,3 @@
-use std::path::Path;
 use super::*;
 use crate::camera::OrthographicCamera;
 use crate::camera::Renderer;
@@ -7,6 +6,7 @@ use crate::material::Material;
 use crate::space::object::{Mesh, Object};
 use crate::space::transform::TransformStep;
 use crate::space::{Point, Triangle, ORIGIN};
+use std::path::Path;
 
 fn test_diamond() -> Object {
     let mut triangles = Vec::new();
@@ -56,6 +56,6 @@ fn test_scene_diamond_render() {
             assert!(path.exists());
             std::fs::remove_file(path).unwrap();
         }
-        Err(e) => panic!("{}", e),
+        Err(e) => panic!("{}", e)
     };
 }

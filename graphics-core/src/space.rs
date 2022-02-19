@@ -11,8 +11,8 @@ pub mod object;
 pub mod scene;
 pub mod transform;
 
-use crate::material::Material;
 use crate::animation::AnimatedValue;
+use crate::material::Material;
 use transform::Transform;
 
 use std::ops::{Add, Div, Mul, Sub};

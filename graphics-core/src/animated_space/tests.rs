@@ -21,22 +21,11 @@ fn get_value_of_constant() {
 
 #[test]
 fn get_value_of_linear() {
-    let a = AnimatedPoint::new(
-        [
-            AnimatedValue::linear(vec![
-                KeyFrame::new(0, 0.0),
-                KeyFrame::new(1, 1.0),
-            ]),
-            AnimatedValue::linear(vec![
-                KeyFrame::new(0, 1.0),
-                KeyFrame::new(1, 2.0),
-            ]),
-            AnimatedValue::linear(vec![
-                KeyFrame::new(0, 2.0),
-                KeyFrame::new(1, 3.0),
-            ])
-        ]
-    );
+    let a = AnimatedPoint::new([
+        AnimatedValue::linear(vec![KeyFrame::new(0, 0.0), KeyFrame::new(1, 1.0)]),
+        AnimatedValue::linear(vec![KeyFrame::new(0, 1.0), KeyFrame::new(1, 2.0)]),
+        AnimatedValue::linear(vec![KeyFrame::new(0, 2.0), KeyFrame::new(1, 3.0)])
+    ]);
     assert_eq!(a.get_value(0), Point::new(0, 1, 2));
     assert_eq!(a.get_value(1), Point::new(1, 2, 3));
 }

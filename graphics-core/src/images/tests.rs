@@ -25,7 +25,7 @@ fn test_save_image() {
         Ok(_) => {
             assert!(Path::new(&path).exists());
             std::fs::remove_file(&path).unwrap();
-        },
+        }
         Err(e) => panic!("err: {:?}", e)
     }
 }

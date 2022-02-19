@@ -1,8 +1,8 @@
 #[cfg(test)]
 pub mod tests;
 
-use crate::space::{Point, Triangle, Line};
 use crate::animation::AnimatedValue;
+use crate::space::{Line, Point, Triangle};
 
 /// An alias for `AnimatedPoint` because it can be more semantically correct
 /// to refer to something as a vector rather than a point.

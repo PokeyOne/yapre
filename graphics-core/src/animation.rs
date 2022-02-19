@@ -79,13 +79,17 @@ pub fn linear_animation_equation(percentage: f64) -> f64 {
 ///
 /// This function is defined to be 0 when x < 0, and 1 when x > 1.
 pub fn ease_in_out_animation_equation(percentage: f64) -> f64 {
-    if percentage < 0.0 { // Before the graph starts
+    if percentage < 0.0 {
+        // Before the graph starts
         0.0
-    } else if percentage < 0.5 { // first half of the graph
+    } else if percentage < 0.5 {
+        // first half of the graph
         2.0 * percentage * percentage
-    } else if percentage < 1.0 { // second half of the graph
+    } else if percentage < 1.0 {
+        // second half of the graph
         -2.0 * (percentage - 1.0).powi(2) + 1.0
-    } else { // After the graph ends
+    } else {
+        // After the graph ends
         1.0
     }
 }
