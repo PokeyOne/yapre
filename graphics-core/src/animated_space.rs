@@ -1,7 +1,7 @@
 #[cfg(test)]
 pub mod tests;
 
-use crate::animation::AnimatedValue;
+use crate::animation::{AnimatedFloat, AnimatedValue};
 use crate::space::Point;
 
 /// An alias for `AnimatedPoint` because it can be more semantically correct
@@ -11,7 +11,7 @@ pub type AnimatedVector = AnimatedPoint;
 /// A basic point in 3D space that has animated values.
 #[derive(Debug, Clone)]
 pub struct AnimatedPoint {
-    values: [AnimatedValue; 3]
+    values: [AnimatedFloat; 3]
 }
 
 #[derive(Debug, Clone)]
@@ -22,7 +22,7 @@ pub struct AnimatedTriangle {
 
 impl AnimatedPoint {
     /// Create a new point from 3 already constructed animated values.
-    pub fn new(values: [AnimatedValue; 3]) -> Self {
+    pub fn new(values: [AnimatedFloat; 3]) -> Self {
         Self { values }
     }
 

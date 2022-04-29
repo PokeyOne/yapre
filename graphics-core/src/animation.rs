@@ -1,22 +1,31 @@
 #[cfg(test)]
 mod tests;
 
+mod key_frame_value;
+
+pub use key_frame_value::*;
 use std::cmp::Ordering;
 
 /// A simple value mapped to a frame/time in the scene. The time stored is an
 /// integer because it should be mapped to a frame number. Frame numbers can
 /// be negative.
+///
+/// The type parameter `T` is the type of the value. Typically this is a
+/// numeric type, but it can be any type.
 #[derive(Clone, Debug, Copy)]
-pub struct KeyFrame {
+pub struct KeyFrame<T: KeyFrameValue> {
     /// The frame number that this node on the timeline.
     pub time: i64,
     /// The value at said KeyFrame
-    pub value: f64
+    pub value: T
 }
 
-impl KeyFrame {
+pub type IntKeyFrame = KeyFrame<i64>;
+pub type FloatKeyFrame = KeyFrame<f64>;
+
+impl<T: KeyFrameValue> KeyFrame<T> {
     /// Construct a new key frame at the specified time and place.
-    pub fn new(time: i64, value: f64) -> Self {
+    pub fn new(time: i64, value: T) -> Self {
         Self { time, value }
     }
 
@@ -35,21 +44,21 @@ impl KeyFrame {
     }
 }
 
-impl Eq for KeyFrame {}
+impl<T: KeyFrameValue> Eq for KeyFrame<T> {}
 
-impl PartialEq<Self> for KeyFrame {
+impl<T: KeyFrameValue> PartialEq<Self> for KeyFrame<T> {
     fn eq(&self, other: &Self) -> bool {
         self.time == other.time
     }
 }
 
-impl PartialOrd<Self> for KeyFrame {
+impl<T: KeyFrameValue> PartialOrd<Self> for KeyFrame<T> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
 
-impl Ord for KeyFrame {
+impl<T: KeyFrameValue> Ord for KeyFrame<T> {
     fn cmp(&self, other: &Self) -> Ordering {
         self.time.cmp(&other.time)
     }
@@ -57,15 +66,18 @@ impl Ord for KeyFrame {
 
 /// A value that is animated by keyframes.
 #[derive(Clone, Debug)]
-pub struct AnimatedValue {
+pub struct AnimatedValue<T: KeyFrameValue> {
     /// Essentially a map of time to value.
-    frames: Vec<KeyFrame>,
+    frames: Vec<KeyFrame<T>>,
     /// Equation that determines the intermediate value between to frames.
     /// The input is the percentage between the two frames, and is always
     /// between 0 and 1. The output should be also be between 0 and 1, and is
     /// the actual percentage between the two frames.
     equation: fn(f64) -> f64
 }
+
+pub type AnimatedInt = AnimatedValue<i64>;
+pub type AnimatedFloat = AnimatedValue<f64>;
 
 /// Just returns the input, because the physical percentage through should
 /// match the time percentage through.
@@ -94,9 +106,9 @@ pub fn ease_in_out_animation_equation(percentage: f64) -> f64 {
     }
 }
 
-impl AnimatedValue {
+impl<T: KeyFrameValue> AnimatedValue<T> {
     /// Just a constant value that will not change with time.
-    pub fn constant(value: f64) -> AnimatedValue {
+    pub fn constant(value: T) -> AnimatedValue<T> {
         AnimatedValue {
             frames: vec![KeyFrame::new(0, value)],
             equation: linear_animation_equation
@@ -104,7 +116,7 @@ impl AnimatedValue {
     }
 
     /// Linearly animated value. Frames should be sorted by time.
-    pub fn linear(mut frames: Vec<KeyFrame>) -> AnimatedValue {
+    pub fn linear(mut frames: Vec<KeyFrame<T>>) -> AnimatedValue<T> {
         frames.sort_unstable();
         AnimatedValue {
             frames,
@@ -114,7 +126,7 @@ impl AnimatedValue {
 
     /// An animated value that is eased in and out. Frames should be sorted by
     /// time.
-    pub fn ease_in_out(mut frames: Vec<KeyFrame>) -> AnimatedValue {
+    pub fn ease_in_out(mut frames: Vec<KeyFrame<T>>) -> AnimatedValue<T> {
         frames.sort_unstable();
         AnimatedValue {
             frames,
@@ -122,28 +134,32 @@ impl AnimatedValue {
         }
     }
 
-    pub fn insert_frame(&mut self, time: i64, value: f64) {
+    pub fn insert_frame(&mut self, time: i64, value: T) {
         self.frames.push(KeyFrame::new(time, value));
         self.frames.sort_unstable();
     }
 
     /// Returns the value at the given time.
-    pub fn get_value(&self, time: f64) -> f64 {
+    ///
+    /// # Panics
+    /// This function **will panic** if there are no frames in the animation.
+    pub fn get_value(&self, time: f64) -> T {
         // Check for not having any frames.
         if self.frames.is_empty() {
-            return 0.0;
+            panic!("No frames in AnimatedValue");
         }
 
         // Check for only having one frame or time is before the first frame.
         if self.frames.len() == 1 || time < self.frames[0].timef() {
-            return self.frames[0].value;
+            return self.frames[0].value.clone();
         }
 
         // Check for being after the last frame.
         if time > self.frames[self.frames.len() - 1].timef() {
-            return self.frames[self.frames.len() - 1].value;
+            return self.frames[self.frames.len() - 1].value.clone();
         }
 
+        // TODO: Just use unwrap if unreachable is used
         // Find the two frames that are before and after the time.
         let (before, after) = match self.find_frames_before_and_after(time) {
             Some(frames) => frames,
@@ -152,7 +168,7 @@ impl AnimatedValue {
         };
         if before == after {
             // If the two frames are the same, return the value of the frame.
-            return self.frames[before].value;
+            return self.frames[before].value.clone();
         }
 
         let before = &self.frames[before];
@@ -161,7 +177,11 @@ impl AnimatedValue {
         let frame_time_difference = (after.time - before.time) as f64;
         let time_since_before = time - before.time as f64;
 
-        (self.equation)(time_since_before / frame_time_difference)
+        // Calculate the percentage through the animation.
+        let percentage = (self.equation)(time_since_before / frame_time_difference);
+
+        // Interpolate between the two frames.
+        before.value.interpolate(&after.value, percentage)
     }
 
     /// Finds the indices of the two frames that are before and after the time.
