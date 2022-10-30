@@ -2,6 +2,8 @@
 // a library that handles it and it is best to not include that dependency
 // in every little thing that needs any io.
 
+pub use pk_stl as stl;
+
 mod obj;
 
 #[cfg(test)]
