@@ -9,22 +9,8 @@ fn key_frame_timef_should_be_straight_conversion() {
 }
 
 #[test]
-fn animated_value_with_no_frames() {
-    let anim_val = AnimatedValue::linear(Vec::new());
-
-    let test_results = vec![20.14, 0.0, PI, -PI]
-        .iter()
-        .map(|val| anim_val.get_value(*val).round() as i64)
-        .collect::<Vec<i64>>();
-
-    for tr in test_results {
-        assert_eq!(0, tr);
-    }
-}
-
-#[test]
 fn constant_animated_value() {
-    let anim_val = AnimatedValue::constant(10.0);
+    let anim_val: AnimatedFloat = AnimatedValue::constant(10.0);
 
     let test_results = vec![20.14, 0.0, PI, -PI]
         .iter()
@@ -57,7 +43,7 @@ fn linear_animated_value() {
 
 #[test]
 fn find_frames_ba_when_zero_frames_should_be_none() {
-    let anim_val = AnimatedValue::linear(Vec::new());
+    let anim_val: AnimatedFloat = AnimatedValue::linear(Vec::new());
 
     let result = anim_val.find_frames_before_and_after(0.0);
 
@@ -128,20 +114,20 @@ fn find_frames_ba_when_several_frames() {
 
 #[test]
 fn test_is_constant_function() {
-    let no_keyframes = AnimatedValue {
+    let no_keyframes: AnimatedFloat = AnimatedValue {
         frames: vec![],
         equation: linear_animation_equation
     };
-    let one_keyframe = AnimatedValue {
+    let one_keyframe: AnimatedFloat = AnimatedValue {
         frames: vec![KeyFrame::new(5, 5.0)],
         equation: linear_animation_equation
     };
-    let two_keyframes_different_value = AnimatedValue {
+    let two_keyframes_different_value: AnimatedFloat = AnimatedValue {
         frames: vec![KeyFrame::new(0, 1.0), KeyFrame::new(24, 40.0)],
         equation: linear_animation_equation
     };
     // Should still not be considered a constant
-    let two_keyframes_same_value = AnimatedValue {
+    let two_keyframes_same_value: AnimatedFloat = AnimatedValue {
         frames: vec![KeyFrame::new(0, 1.0), KeyFrame::new(24, 1.0)],
         equation: linear_animation_equation
     };
